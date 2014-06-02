@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/comment_meego.svg</file>
+        <file>Image/comment2_meego.svg</file>
+        <file>Image/skin.png</file>
+        <file>Image/skin_invert.png</file>
+        <file>Image/to_down_inverse_meego.png</file>
+        <file>Image/to_down_meego.png</file>
+        <file>Image/to_up_inverse_meego.png</file>
+        <file>Image/to_up_meego.png</file>
+        <file>Image/about_inverse_meego.png</file>
+        <file>Image/about_meego.png</file>
+    </qresource>
+</RCC>

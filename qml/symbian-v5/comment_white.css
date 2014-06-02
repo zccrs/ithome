@@ -1,0 +1,5 @@
+body{
+    background-color:#F1F1F1!important}
+.post_comment{width:340px!important;}/*mmmm总评论界面的属性mmmm*/
+.comm_list ul.list li.entry{width:340px!important;}/*mmmm回复内容字体等等的设置mmmm*/
+.comm_list .more_comm a{width:150px!important;}/*mmmm更多评论的属性mmmm*/

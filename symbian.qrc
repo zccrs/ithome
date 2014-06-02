@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/back.svg</file>
+        <file>Image/back2.svg</file>
+        <file>Image/comment.svg</file>
+        <file>Image/comment2.svg</file>
+        <file>Image/edit.svg</file>
+        <file>Image/edit2.svg</file>
+        <file>Image/message_send.svg</file>
+        <file>Image/message_send_inverted.svg</file>
+        <file>Image/refresh.svg</file>
+        <file>Image/refresh2.svg</file>
+        <file>Image/search.svg</file>
+        <file>Image/search2.svg</file>
+        <file>Image/setting.svg</file>
+        <file>Image/setting2.svg</file>
+        <file>Image/share.svg</file>
+        <file>Image/share2.svg</file>
+        <file>Image/Symbian.png</file>
+        <file>Image/to_down_inverse_symbian.svg</file>
+        <file>Image/to_down_symbian.svg</file>
+        <file>Image/to_up_inverse_symbian.svg</file>
+        <file>Image/to_up_symbian.svg</file>
+        <file>Image/toolbar.svg</file>
+        <file>Image/toolbar_inverse.svg</file>
+        <file>Image/about_inverse_symbian.svg</file>
+        <file>Image/about_symbian.svg</file>
+        <file>Image/toolbar-delete_inverse.svg</file>
+        <file>Image/qgn_indi_browser_tb_zoom_in.svg</file>
+        <file>Image/qgn_indi_browser_tb_zoom_out.svg</file>
+        <file>Image/slider-1.png</file>
+        <file>Image/slider-2.png</file>
+        <file>Image/slider-3.png</file>
+    </qresource>
+</RCC>

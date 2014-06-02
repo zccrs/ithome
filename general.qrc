@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/01.png</file>
+        <file>Image/02.png</file>
+        <file>Image/03.png</file>
+        <file>Image/04.png</file>
+        <file>Image/ist_indicator.svg</file>
+        <file>Image/pull_down.svg</file>
+        <file>Image/pull_down_inverse.svg</file>
+        <file>Image/it.png</file>
+        <file>Image/Browser.svg</file>
+        <file>Image/Copy.svg</file>
+        <file>Image/Qzone.svg</file>
+        <file>Image/Sina_Weibo.svg</file>
+        <file>Image/tencent_Weibo.svg</file>
+        <file>Image/shadow.png</file>
+        <file>Image/tieba.svg</file>
+        <file>Image/PageHeader.svg</file>
+        <file>Image/up.svg</file>
+        <file>Image/yiyue.png</file>
+        <file>Image/icon_grade_middle_star_n.png</file>
+        <file>Image/icon_grade_middle_star_s.png</file>
+        <file>Image/ithome_logo.png</file>
+        <file>Image/save.svg</file>
+    </qresource>
+</RCC>

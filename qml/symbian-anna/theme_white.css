@@ -1,0 +1,10 @@
+body{
+    margin:10;
+    max-width:340px;
+    color:#3c3c3c;
+    background-color:#F1F1F1!important;}
+    img{
+        display:block;
+        margin:0 auto;
+        max-width:340px;
+        height:auto!important}

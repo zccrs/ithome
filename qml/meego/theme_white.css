@@ -1,0 +1,11 @@
+body{
+    margin:10;
+    max-width:460px;
+    color:#3c3c3c;
+    background-attachment:fixed;
+    background-image: url(/opt/ithome/qml/meego/meegoBackground.png)!important;}
+    img{
+        display:block;
+        margin:0 auto;
+        max-width:460px;
+        height:auto!important}

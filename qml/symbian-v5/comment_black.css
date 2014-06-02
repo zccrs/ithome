@@ -1,0 +1,14 @@
+body{
+background-color:#000000!important;}
+.post_comment{width:340px!important;}/*mmmm总评论界面的属性mmmm*/
+.comm_list ul.list li.entry{color:#ddd!important;width:340px!important;}/*mmmm回复内容字体等等的设置mmmm*/
+.re_comm p{color:#aaa!important;}/*mmmm楼中楼回复的字体mmmm*/
+.comm_list .more_comm a{width:150px!important;}/*mmmm更多评论的属性mmmm*/
+.comm_list ul.list li.entry .info,.comm_list ul.list li.entry .re_info{padding:12px 0 0 0;font-size:12px;color:#888!important;}/*mmmm回复者时间和地点等信息mmmm*/
+.comm_list ul.list li strong.p_floor{color:#888!important;padding-right:6px;}
+.comm_list ul.list li strong.nick a{color:#888!important;}/*mmmm昵称的颜色mmmm*/
+.comm_list ul.list li.entry span.comm_reply{float:right;}/*mmmm支持，反对，回复”这几个字的背景mmmm*/
+.comm_list ul.list li.entry span.comm_reply a{color:#888!important;}/*mmmm支持，反对，回复”这几个字的属性mmmm*/
+.comm_list ul.list li.entry ul.reply{clear:both;margin:10px 0 0 0;padding:0 8px;border:1px #eeccbb solid;background:#1b1313!important;zoom:1;}/*mmmm楼中楼回复的背景色mmmm*/
+.comm_list ul.list li.entry ul.reply li{color:#e1e1e1!important;}/*mmmm楼中楼回复的边框颜色mmmm*/
+
