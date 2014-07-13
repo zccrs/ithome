@@ -5,18 +5,17 @@ import com.nokia.meego 1.1
 import "../general"
 MyPage{
     id:contentPage
-    property string url: ""
-    property string myurl: ""
-    //property bool autoLoadImage: false
-    property bool allowDoubleClick: false
+    property string url: ""//html文件的本地路径
+    property string myurl: ""//这篇文章的网络地址
+    property bool allowDoubleClick:false
     property bool loadImageFinish: false//用了记录是否请求过加载全部图片
+    property int contentY: 0//用了记录改变url之前的webview的位置
     property string title: ""
     property string postdate: ""
     property string newssource: ""
     property string newsauthor: ""
     property string me_to_xml: ""//这篇新闻的xml格式的内容
     property int mysid: 0
-    property int contentY: 0//用了记录改变url之前的webview的位置
     tools: ToolBarLayout{
         id:contentTool
         ToolIcon{
@@ -312,7 +311,6 @@ MyPage{
             onDoubleClick: {
                 if(allowDoubleClick)
                 {
-
                     //utility.imageToShow("contentImage"+String(mysid))
                     //var temp=cacheContent.getContent_image(mysid)
                     //if(temp.indexOf("noImage")<0&temp!=="-1")
@@ -429,5 +427,4 @@ MyPage{
             }
         }
     }
-}
 }

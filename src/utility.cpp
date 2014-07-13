@@ -12,25 +12,24 @@ Utility::Utility(QObject *parent) :
 
 #if defined(Q_OS_HARMATTAN)
     prefix = QDir::homePath()+"/.ithome";
-
-    QDir temp;
-    QFileInfo info(prefix);
-    if(!info.exists())
-        if(!temp.mkpath(prefix))
-            qDebug()<<prefix<<QString::fromUtf8("路径创建失败");
     coding="utf-8";
-
-    m_cacheImagePrefix = prefix+"cache/";
 #else
-    prefix=".";
+    prefix="D:/ithome";
 #ifdef Q_OS_LINUX
     coding="utf-8";
 #else
     coding="gbk";
 #endif
-    m_cacheImagePrefix = prefix+"../../";
 #endif
+    m_cacheImagePrefix = prefix+"/cache/";
+    
     favoritePath=prefix+"/favorite.txt";
+    
+    QDir temp;
+    QFileInfo info(prefix);
+    if(!info.exists())
+        if(!temp.mkpath(prefix))
+            qDebug()<<prefix<<QString::fromUtf8("路径创建失败");
 }
 
 QString Utility::cacheImagePrefix()
@@ -113,7 +112,6 @@ void Utility::consoleLog(QString string)
 }
 QString Utility::saveImageToLocality(const QString imageSrc)
 {
-    qDebug()<<QString::fromUtf8("需要保存的图片地址：")+imageSrc;
     QString imageName=imageSrc.mid(imageSrc.lastIndexOf("/")+1,imageSrc.length()-imageSrc.lastIndexOf("/")-1);
 #if defined(Q_OS_HARMATTAN)
     QString toSrc="/home/user/MyDocs/Pictures/";
@@ -137,7 +135,7 @@ QString Utility::saveImageToLocality(const QString imageSrc)
                 return QString::fromUtf8("成功保存到")+toSrc+imageName;
             else return QString::fromUtf8("保存失败！");
         }else return QString::fromUtf8("您要保存的文件不存在");
-
+        
     }else{
         return QString::fromUtf8("您要保存的文件已经存在");
     }

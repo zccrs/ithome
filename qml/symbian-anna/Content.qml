@@ -217,6 +217,8 @@ MyPage{
 
         WebView{
             id:web
+            width: parent.width
+            opacity: 0
             url:""
             anchors.top: title_main.bottom
             property string videoUrl
@@ -224,10 +226,7 @@ MyPage{
                 var temp=web.url
                 web.url=""
                 web.url=temp
-                //setCssToTheme()//如果屏幕放心变了
             }
-            opacity: 0
-            width: parent.width
             Behavior on opacity{
                 NumberAnimation{duration: 300}
             }
@@ -288,7 +287,6 @@ MyPage{
                     //}
 
                     //web.evaluateJavaScript("$(\"#"+id+"\""+").attr(\"src\",\""+id+suffix+"\")")//将html中的图片url设置为本地下载的图片
-
                 }
                 function screenHeight()
                 {

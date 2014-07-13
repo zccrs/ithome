@@ -89,7 +89,7 @@ public slots:
 #if defined(Q_OS_HARMATTAN)
     bool clearCache(QString dirPath = QDir::homePath()+"/.ithome/cache", bool deleteSelf=false , bool deleteHidden= false);//删除缓存文件
 #else
-    bool clearCache(QString dirPath ="./cache", bool deleteSelf=false , bool deleteHidden= false);//删除缓存文件
+    bool clearCache(QString dirPath ="D:/ithome/cache", bool deleteSelf=false , bool deleteHidden= false);//删除缓存文件
 #endif
 };
 

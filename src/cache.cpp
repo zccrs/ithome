@@ -26,21 +26,20 @@ Cache::Cache(Settings *new_set,QObject *parent) :
 
 #if defined(Q_OS_HARMATTAN)
     prefix = QDir::homePath()+"/.ithome";
-    QFileInfo info(prefix);
-    QDir temp;
-    if(!info.exists())
-        if(!temp.mkpath(prefix))
-            qDebug()<<prefix<<QString::fromUtf8("路径创建失败");
     coding="utf-8";
 #else
-    prefix=".";
+    prefix="D:/ithome";
 #ifdef Q_OS_LINUX
     coding="utf-8";
 #else
     coding="gbk";
 #endif
 #endif
-
+    QFileInfo info(prefix);
+    QDir temp;
+    if(!info.exists())
+        if(!temp.mkpath(prefix))
+            qDebug()<<prefix<<QString::fromUtf8("路径创建失败");
 }
 void Cache::saveTitle(const QString sid, QString string)
 {
@@ -85,16 +84,21 @@ void Cache::saveContent(const QString sid,QString string)
     {
         file.open(QIODevice::WriteOnly);
         QTextStream text(&file);
+        
+        QDir dirTemp;
 #if   defined(Q_OS_HARMATTAN)
         text.setCodec("utf-8");//设置保存文件内容的编码，meego必须为utf-8，不然读取文件时会乱码
         QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\"/opt/ithome/qml/general/jquery.min1.8.0.js\"></script>\n";
         string.append("\n<script>$(\"img\").attr(\"src\",\"/opt/ithome/qml/general/it.png\");$(\"img\").attr(\"loading-url\",\"/opt/ithome/qml/general/loading.png\");</script>\n<script src=\"/opt/ithome/qml/general/lazyLoadImage.js\"></script>");
-#elif(QT_VERSION==0x040703)
-        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\"../../qml/symbian-v5/jquery.min1.8.0.js\"></script>\n";
-        string.append("\n<script>var obj=document.getElementsByTagName(\"img\");for(var i=0;i<obj.length;i++){obj[i].setAttribute(\"src\",\"../../qml/general/it.png\");obj[i].setAttribute(\"loading-url\",\"../../qml/general/loading.png\");}</script>\n<script src=\"../../qml/symbian-v5/lazyLoadImage.js\"></script>");
+#elif defined(Q_OS_S60V5)//判断qt的版本
+        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v5/jquery.min1.8.0.js\"></script>\n";
+        string.append("\n<script>var obj=document.getElementsByTagName(\"img\");for(var i=0;i<obj.length;i++){obj[i].setAttribute(\"src\",\""+dirTemp.absolutePath ()+"/qml/general/it.png\");obj[i].setAttribute(\"loading-url\",\""+dirTemp.absolutePath ()+"/qml/general/loading.png\");}</script>\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v5/lazyLoadImage.js\"></script>");
+#elif defined(Q_OS_S60V3)//判断qt的版本
+        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v3/jquery.min1.8.0.js\"></script>\n";
+        string.append("\n<script>var obj=document.getElementsByTagName(\"img\");for(var i=0;i<obj.length;i++){obj[i].setAttribute(\"src\",\""+dirTemp.absolutePath ()+"/qml/general/it.png\");obj[i].setAttribute(\"loading-url\",\""+dirTemp.absolutePath ()+"/qml/general/loading.png\");}</script>\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v3/lazyLoadImage.js\"></script>");
 #else
-        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\"../../qml/general/jquery.min1.8.0.js\"></script>\n";
-        string.append("\n<script>$(\"img\").attr(\"src\",\"../../qml/general/it.png\");$(\"img\").attr(\"loading-url\",\"../../qml/general/loading.png\");</script>\n<script src=\"../../qml/general/lazyLoadImage.js\"></script>");
+        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\""+dirTemp.absolutePath ()+"/qml/general/jquery.min1.8.0.js\"></script>\n";
+        string.append("\n<script>$(\"img\").attr(\"src\",\""+dirTemp.absolutePath ()+"/qml/general/it.png\");$(\"img\").attr(\"loading-url\",\""+dirTemp.absolutePath ()+"/qml/general/loading.png\");</script>\n<script src=\""+dirTemp.absolutePath ()+"/qml/general/lazyLoadImage.js\"></script>");
 #endif
         disposeHref(string);//修改超链接
         disposeLetvVideo(string);//解析乐视视频
@@ -196,7 +200,7 @@ QString Cache::getContent_noImageModel(const QString sid)
 #if defined(Q_OS_HARMATTAN)
         return prefix+"/cache/"+sid+"/content_noImageModel.html";
 #else
-        return "../../cache/"+sid+"/content_noImageModel.html";
+        return prefix+"/cache/"+sid+"/content_noImageModel.html";
 #endif
     }else return "-1";
 }
@@ -239,7 +243,7 @@ QString Cache::getContent_image(const QString sid)
 #if defined(Q_OS_LINUX)||defined(Q_OS_HARMATTAN)
             return prefix+"/cache/"+sid+"/content_noImageModel.html";
 #else
-            return "../../cache/"+sid+"/content_noImageModel.html";
+            return prefix+"/cache/"+sid+"/content_noImageModel.html";
 #endif
         }else return "-1";
     }else{
@@ -247,7 +251,7 @@ QString Cache::getContent_image(const QString sid)
 #if defined(Q_OS_LINUX)||defined(Q_OS_HARMATTAN)
         return prefix+"/cache/"+sid+"/content_image.html";
 #else
-        return "../../cache/"+sid+"/content_image.html";
+        return prefix+"/cache/"+sid+"/content_image.html";
 #endif
     }
 }
@@ -373,8 +377,6 @@ void Cache::imageDownload(const QString id_content, const QString url, const QSt
 {
     emit imageDownloads(id_content, url,id_image, suffix);//发送下载图片的信号到新的线程
 }
-
-
 
 Cache::~Cache()
 {

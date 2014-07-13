@@ -212,8 +212,9 @@ MyPage{
     }
 
     onFocusChanged: {
-        utility.consoleLog("主界面获得了焦点")
-        if(focus)
+        if(focus){
             list.forceActiveFocus()
+            cacheContent.clearCache()//清理缓存占用
+        }
     }
 }

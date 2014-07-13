@@ -7,7 +7,7 @@ ThreadDownloadImage::ThreadDownloadImage(QObject *parent) :
 #if defined(Q_OS_HARMATTAN)
     prefix=QDir::homePath()+"/.ithome";
 #else
-    prefix=".";
+    prefix="D:/ithome";
 #endif
     isImageDownloading=false;
     m_canclePost=false;
@@ -78,7 +78,6 @@ void ThreadDownloadImage::downloadFinish(QNetworkReply *replys)
         else
             m_canclePost=false;//如果用户停止了下载，就不再调用get函数，另外，别忘了置为false
     }
-   // qDebug()<<QString::fromUtf8("新线程地址是：")<<QThread::currentThread();
 }
 ThreadDownloadImage::~ThreadDownloadImage()
 {

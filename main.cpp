@@ -4,6 +4,8 @@
 #include <QString>
 #include <QDeclarativeContext>
 #include <QDeclarativeComponent>
+#include <QSystemDeviceInfo>
+#include <QWebSettings>
 #include "qmlapplicationviewer.h"
 #include "src/cache.h"
 #include "src/settings.h"
@@ -36,8 +38,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext ()->setContextProperty ("cacheContent",cacheContent);
     viewer.rootContext()->setContextProperty("settings",setting);
     viewer.rootContext()->setContextProperty("utility",unility);
+    
+    QWebSettings::globalSettings ()->setAttribute (QWebSettings::LocalContentCanAccessRemoteUrls,true);
+    QWebSettings::globalSettings ()->setAttribute (QWebSettings::SpatialNavigationEnabled,true);
 #if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-#if Q_OS_S60V5//判断qt的版本
+#if defined(Q_OS_S60V5)//判断qt的版本
     viewer.setMainQmlFile(QLatin1String("qml/symbian-v5/main.qml"));
     if(setting->getValue("night_mode",false).toBool())
         unility->setCss("./qml/symbian-v5/theme_black.css",viewer.width()-20);//设置默认的css

@@ -124,4 +124,10 @@ MyPage{
             }
         }
     }
+    onFocusChanged: {
+        if(focus){
+            list.forceActiveFocus()
+            cacheContent.clearCache()//清理缓存占用
+        }
+    }
 }

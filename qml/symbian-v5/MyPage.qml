@@ -42,6 +42,10 @@ Rectangle {
     onStatusChanged: {
         if (status == PageStatus.Activating)
             internal.orientationLockCheck();
+        if(status == PageStatus.Active)
+        {
+            forceActiveFocus();//获得焦点
+        }
     }
 
     onOrientationLockChanged: {

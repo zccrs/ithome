@@ -16,6 +16,7 @@ function refreshImage()
             if(obj.attr("data-url")==="")
             {
                 obj.attr("src",obj.attr("loading-url"));//显示正在加载的状态
+                //obj.attr("src",obj.attr("myurl"));//加载图片
                 window.qml.loadImage(obj.attr('myurl'),obj.attr('id'),obj.attr('suffix'))//如果图片不存在就调用qml中的函数加载
             }else{
                 //渐出效果
@@ -32,7 +33,6 @@ function imageClick(myid)
     var obj=$("#"+myid)
     if(obj.attr("src").indexOf('qml/general/')>0)
     {
-
         if(obj.attr('data-url')==="")
         {
             window.qml.loadImage(obj.attr('myurl'),myid,obj.attr('suffix'));

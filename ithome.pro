@@ -5,6 +5,7 @@ VERSION = 1.1.5
 QT += network webkit xml
 CONFIG += mobility
 MOBILITY += systeminfo
+
 folder_01.source = qml/meego
 folder_01.target = qml
 folder_02.source = qml/symbian-anna
@@ -123,3 +124,9 @@ HEADERS += \
     src/threaddownloadimage.h \
     src/myxmllistmodel.h \
     src/cache.h
+
+contains(MEEGO_EDITION,harmattan) {
+    desktopfile.files = ithome.desktop
+    desktopfile.path = /usr/share/applications
+    INSTALLS += desktopfile
+}

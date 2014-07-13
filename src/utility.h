@@ -14,6 +14,8 @@
 #include <QApplication>
 #include <QWebSettings>
 #include <QIODevice>
+#include <QImage>
+#include <QDeclarativeImageProvider>
 class Utility : public QObject
 {
     Q_OBJECT
@@ -42,7 +44,6 @@ private:
     QString cacheImagePrefix();
 private slots:
     void replyFinished(QNetworkReply* replys);//当post结束时调用
-
 signals:
     void postOk(QString returnData);//给qml信号
 private:
