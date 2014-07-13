@@ -55,11 +55,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     else
         unility->setCss("./qml/symbian-v3/theme_white.css",viewer.width()-20);
 #else
-    viewer.setMainQmlFile(QLatin1String("qml/symbian-anna/main.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/symbian-v5/main.qml"));
     if(setting->getValue("night_mode",false).toBool())
-        unility->setCss("./qml/symbian-anna/theme_black.css",viewer.width()-20);//设置默认的css
+        unility->setCss("./qml/symbian-v5/theme_black.css",viewer.width()-20);//设置默认的css
     else
-        unility->setCss("./qml/symbian-anna/theme_white.css",viewer.width()-20);
+        unility->setCss("./qml/symbian-v5/theme_white.css",viewer.width()-20);
 #endif
 
     viewer.showExpanded();

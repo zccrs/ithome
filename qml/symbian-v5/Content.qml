@@ -252,7 +252,7 @@ MyPage{
                         if(loading)
                             main.busyIndicatorHide()//隐藏缓冲圈圈
                         comment.hide()
-                        image.imageUrl="../../cache/"+mysid+"/"+src
+                        image.imageUrl=utility.cacheImagePrefix+mysid+"/"+src
                         image.opacity=1
                     }
                 }

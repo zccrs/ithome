@@ -38,6 +38,8 @@ MyPage{
             Connections{
                 target: cacheContent
                 onRemoveResult:{
+                    if(setting.status!=PageStatus.Active)
+                        return 0
                     if(result)
                     {
                         cache.text="0M"
