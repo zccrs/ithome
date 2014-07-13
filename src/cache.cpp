@@ -91,10 +91,10 @@ void Cache::saveContent(const QString sid,QString string)
         QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\"/opt/ithome/qml/general/jquery.min1.8.0.js\"></script>\n";
         string.append("\n<script>$(\"img\").attr(\"src\",\"/opt/ithome/qml/general/it.png\");$(\"img\").attr(\"loading-url\",\"/opt/ithome/qml/general/loading.png\");</script>\n<script src=\"/opt/ithome/qml/general/lazyLoadImage.js\"></script>");
 #elif defined(Q_OS_S60V5)//判断qt的版本
-        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v5/jquery.min1.8.0.js\"></script>\n";
+        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n";
         string.append("\n<script>var obj=document.getElementsByTagName(\"img\");for(var i=0;i<obj.length;i++){obj[i].setAttribute(\"src\",\""+dirTemp.absolutePath ()+"/qml/general/it.png\");obj[i].setAttribute(\"loading-url\",\""+dirTemp.absolutePath ()+"/qml/general/loading.png\");}</script>\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v5/lazyLoadImage.js\"></script>");
 #elif defined(Q_OS_S60V3)//判断qt的版本
-        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v3/jquery.min1.8.0.js\"></script>\n";
+        QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n";
         string.append("\n<script>var obj=document.getElementsByTagName(\"img\");for(var i=0;i<obj.length;i++){obj[i].setAttribute(\"src\",\""+dirTemp.absolutePath ()+"/qml/general/it.png\");obj[i].setAttribute(\"loading-url\",\""+dirTemp.absolutePath ()+"/qml/general/loading.png\");}</script>\n<script src=\""+dirTemp.absolutePath ()+"/qml/symbian-v3/lazyLoadImage.js\"></script>");
 #else
         QString temp="<meta http-equiv=\"Content-Type\" content=\"text/html; charset="+coding+"\" />\n<script src=\""+dirTemp.absolutePath ()+"/qml/general/jquery.min1.8.0.js\"></script>\n";
