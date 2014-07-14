@@ -16,6 +16,7 @@
 #include <QIODevice>
 #include <QImage>
 #include <QDeclarativeImageProvider>
+#include "settings.h"
 class Utility : public QObject
 {
     Q_OBJECT
@@ -31,7 +32,7 @@ public:
 //#endif
 
 public:             // Other functions.
-    Q_INVOKABLE void postHttp(const QString postMode,const QString postUrl,const QString postData);
+    Q_INVOKABLE void postHttp(const QString postUrl,const QString postData );
 private:
     QString queue[50];//自己写的列队,懒的用QQueue了
     int queue_begin,queue_end;//记录列队的队首和队尾
@@ -44,10 +45,15 @@ private:
     QString cacheImagePrefix();
 private slots:
     void replyFinished(QNetworkReply* replys);//当post结束时调用
+    void loginFinished(QNetworkReply* replys);//当登陆完成时调用
+    void getUserDataFinished(QNetworkReply* replys);//获取用户信息完成时调用
 signals:
     void postOk(QString returnData);//给qml信号
+    void loginOk(QString replyData, QString replyCookie);//发送登陆完成后的信号
+    void getUserDataOk( QString replyData );
 private:
     QNetworkAccessManager *manager;
+    Settings settings;
 public slots:
     bool imageIsShow(const QString name);//name=图片类型（标题图片还是文章图）+文章id
     void imageToShow(const QString name);//记录用户点击过的每一个标题图片或者文章图片，以方便下次打开时在显示这个图片
@@ -67,6 +73,9 @@ public slots:
     bool setFavorite(QString newsid,bool value);//加入收藏夹
 
     bool getFavoriteIsNull();//返回收藏夹是否为空
+    
+    void login(QByteArray useremail, QByteArray password);
+    void getUserData();
 };
 
 #endif // UTILITY_H

@@ -42,7 +42,8 @@ MyPage{
             iconSource: night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
 
             onClicked: {
-                comment.show()
+                utility.login("853715872@qq.com", "zhangyspa123")
+                //comment.show()
             }
         }
         ToolButton{
@@ -66,6 +67,20 @@ MyPage{
             }
         }
     }
+    Connections{
+        target: utility
+        onLoginOk:{
+            var d=JSON.parse(replyData)
+            d = d.d.split(":")
+            if(d[0]==="ok"){
+                settings.setValue("userName", d[1])
+                settings.setValue("userCookie", replyCookie)
+                showBanner("登陆成功")
+            }else
+                showBanner("登陆失败")
+        }
+    }
+
     Connections{
         target: cacheContent
         /*onContent_image:{

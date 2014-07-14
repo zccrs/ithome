@@ -37,7 +37,7 @@ MyPage{
             opacity: night_mode?brilliance_control:1
             //platformInverted: main.platformInverted
             onClicked: {
-                current_page="about"
+                current_page="page"
                 if(signature_input.text!="")
                 {
                     settings.setValue("signature",signature_input.text)

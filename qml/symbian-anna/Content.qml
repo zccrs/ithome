@@ -42,7 +42,8 @@ MyPage{
             opacity: night_mode?brilliance_control:1
             iconSource: night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
             onClicked: {
-                comment.show()
+                //comment.show()
+                utility.login("853715872@qq.com","love8266241314")
             }
         }
         ToolButton{
@@ -91,6 +92,18 @@ MyPage{
                     web.evaluateJavaScript("refreshImage()")
                 }
             }
+        }
+    }
+    Connections{
+        target: utility
+        onLoginOk:{
+            var d=JSON.parse(replyData)
+            d = d.d.split(":")
+            if(d[0]==="ok"){
+                settings.setValue("userCookie", replyCookie)
+                showBanner("登陆成功")
+            }else
+                showBanner("登陆失败")
         }
     }
     QueryDialog {

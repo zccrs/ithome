@@ -13,19 +13,19 @@ MyPage{
             opacity: night_mode?brilliance_control:1
             platformInverted: main.platformInverted
             onClicked: {
-                current_page="about"
+                current_page="page"
                 if(signature_input.text!="")
                 {
                     settings.setValue("signature",signature_input.text)
                     signature_input.placeholderText=signature_input.text
                     signature_input.text=""
                 }
-                if(nickname_input.text!="")
+                /*if(nickname_input.text!="")
                 {
                     settings.setValue("name",nickname_input.text)
                     nickname_input.placeholderText=nickname_input.text
                     nickname_input.text=""
-                }
+                }*/
 
                 pageStack.pop()
                 if(loading)
@@ -33,7 +33,18 @@ MyPage{
             }
         }
         ToolButton{
+            id: userCenter
+            opacity: night_mode?brilliance_control:1
+            platformInverted: main.platformInverted
+            iconSource: "toolbar-home"
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("UserCenter.qml"))
+            }
+        }
+
+        ToolButton{
             id:deleteButton
+            opacity: night_mode?brilliance_control:1
             platformInverted: main.platformInverted
             iconSource: "toolbar-delete"
             Connections{
@@ -58,6 +69,7 @@ MyPage{
         }
         ToolButton{
             id:aboutButton
+            opacity: night_mode?brilliance_control:1
             platformInverted: main.platformInverted
             iconSource: night_mode?"qrc:/Image/about_symbian.svg":"qrc:/Image/about_inverse_symbian.svg"
             onClicked: {
@@ -126,7 +138,7 @@ MyPage{
                 night_mode=checked
                 settings.setValue("night_mode",checked)
             }
-            KeyNavigation.up: nickname_input
+            KeyNavigation.up: signature_input
             KeyNavigation.down: show_image_off_on
         }
         MySwitch{
@@ -246,7 +258,7 @@ MyPage{
             anchors.top: intensity_control.bottom
         }
 
-        Text{
+        /*Text{
             id:my_phone
             text:"我的设备"
             font.pixelSize: 22
@@ -320,7 +332,7 @@ MyPage{
                     }
                 }
             }
-        }
+        }*/
 
         Text{
             id:my_signature
@@ -342,12 +354,12 @@ MyPage{
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: my_phone.bottom
+            anchors.top: cut_off2.bottom
             anchors.topMargin:20
             KeyNavigation.up: intensity_control
-            KeyNavigation.down: nickname_input
+            KeyNavigation.down: night_mode_off_on
         }
-        Text{
+        /*Text{
             id:my_nickname
             text:"我的昵称"
             anchors.left: parent.left
@@ -369,7 +381,7 @@ MyPage{
             anchors.topMargin:20
             KeyNavigation.up: signature_input
             KeyNavigation.down: night_mode_off_on
-        }
+        }*/
         Behavior on contentY{
             NumberAnimation{duration: 200}
         }
@@ -377,7 +389,7 @@ MyPage{
         //onContentYChanged: console.log("setting page flick ContentY:"+settingFlick.contentY)
         CuttingLine{
             id:cut_off3
-            anchors.top: nickname_input.bottom
+            anchors.top: signature_input.bottom
         }
         Text{
             id:remove_cache

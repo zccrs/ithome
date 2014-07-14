@@ -56,7 +56,17 @@ void ThreadDownloadImage::downloadFinish(QNetworkReply *replys)
         QString id_content=contentId.dequeue();
         QString id_image=imageId.dequeue();
         QString suffix=imageSuffix.dequeue();
-        QString imageName=prefix+"/cache/"+id_content+"/"+id_image+suffix;//这是一个局部变量
+        QString imageName;
+        if( id_content=="avatar" ){
+            if( QFile::exists (imageName))
+                QFile::remove (imageName);
+#if defined(Q_OS_HARMATTAN)
+            imageName = prefix+"/cache/"+id_image+suffix;//这是一个局部变量
+#else
+            imageName = "./qml/general/"+id_image+suffix;//这是一个局部变量
+#endif
+        }else
+            imageName = prefix+"/cache/"+id_content+"/"+id_image+suffix;//这是一个局部变量
         if(!QFile::exists(imageName))
         {
             qDebug()<<QString::fromUtf8("保存地址是：")+imageName;

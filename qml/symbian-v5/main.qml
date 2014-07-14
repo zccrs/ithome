@@ -1,5 +1,22 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.0
+import QtQuick 1.1
+/*import QtWebKit 1.0
+
+Flickable{
+    id:root
+    width: 360
+    height: 640
+    contentHeight: web.height
+    contentWidth: web.width
+    flickableDirection :Flickable.HorizontalAndVerticalFlick
+    WebView{
+        id:web
+        //anchors.fill: parent
+        preferredWidth: root.width
+        url:"http://wap.ithome.com/rss/onlycomment_93884.html"
+    }
+}*/
+
 import com.nokia.symbian 1.0
 import QtMobility.systeminfo 1.1
 import com.nokia.extras 1.0

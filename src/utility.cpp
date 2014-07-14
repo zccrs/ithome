@@ -8,8 +8,6 @@ Utility::Utility(QObject *parent) :
 
     queue_begin=queue_end=0;
     manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(replyFinished(QNetworkReply*)));
-
 #if defined(Q_OS_HARMATTAN)
     prefix = QDir::homePath()+"/.ithome";
     coding="utf-8";
@@ -50,28 +48,69 @@ void Utility::imageToShow(const QString name)
 }
 
 
-void Utility::postHttp(const QString postMode,const QString postUrl,const QString postData)
+void Utility::postHttp(const QString postUrl,const QString postData)
 {
     QTextCodec *codec = QTextCodec::codecForName("gb2312");
     QByteArray array=codec->fromUnicode(postData);
     QNetworkRequest request;
     request.setUrl(QUrl(postUrl));
     request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=gb2312");/*设置http请求头，不然塞班真机会出现问题*/
-    if(postMode=="POST")
-    {
-        manager->post(request,array);
-    }else if(postMode=="GET"){
-        manager->get(request);
-    }else qDebug()<<"暂时没有支持其他种类的http请求";
+    request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+    request.setRawHeader ("Cookie", settings.getValue ("userCookie","").toByteArray ());
+    manager->disconnect ();
+    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(replyFinished(QNetworkReply*)));
+    manager->post(request,array);
 }
 void Utility::replyFinished(QNetworkReply *replys)
 {
-    //qDebug()<<haha->errorString();
     if(replys->error() == QNetworkReply::NoError)
     {
         QTextCodec *codec = QTextCodec::codecForName("gb2312");
         QString string=codec->toUnicode(replys->readAll());
         emit postOk(string);
+    }
+}
+
+void Utility::loginFinished(QNetworkReply *replys)
+{
+    if(replys->error() == QNetworkReply::NoError)
+    {
+        QString string=replys->readAll();
+        QString cookie_temp = replys->rawHeader ("Set-Cookie");
+        qDebug ()<<cookie_temp;
+        int pos_end1 = cookie_temp.indexOf (";");
+        int pos_begin2 = cookie_temp.indexOf ("user=username=");
+        int pos_end2 = cookie_temp.indexOf (";", pos_begin2);
+        
+        cookie_temp = cookie_temp.mid (0, pos_end1+1)+cookie_temp.mid (pos_begin2, pos_end2-pos_begin2);
+        
+        emit loginOk (string, cookie_temp);
+    }
+}
+
+void Utility::getUserDataFinished(QNetworkReply *replys)
+{
+    if(replys->error() == QNetworkReply::NoError)
+    {
+        QString string=QString::fromUtf8 (replys->readAll());
+        if( string.indexOf ("<a href=\"/usercenter/base.aspx\">here</a>")>0){
+            QNetworkRequest request;
+            request.setUrl (QUrl("http://i.ruanmei.com/usercenter/base.aspx"));
+            request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+            request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+            QString cookie = settings.getValue ("userCookie","").toString ();
+            qDebug ()<<cookie;
+            cookie = cookie.mid (0,cookie.indexOf (";")+1);
+            qDebug ()<<cookie.toLatin1 ();
+            request.setRawHeader ("Cookie", cookie.toLatin1 ());
+            QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
+            connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(getUserDataFinished(QNetworkReply*)));
+
+            manager_temp->get (request);
+        }else{
+            replys->manager ()->deleteLater ();
+            emit getUserDataOk (string);
+        }
     }
 }
 
@@ -403,6 +442,36 @@ bool Utility::getFavoriteIsNull()
             return false;
     }else
         return true;//为空返回true
+}
+
+void Utility::login(QByteArray useremail, QByteArray password)
+{
+    settings.setValue ("useremail", useremail);
+    settings.setValue ("password", password);
+    QByteArray array="{ \"username\":\""+useremail+"\", \"password\":\""+password+"\"  }";
+    QNetworkRequest request;
+    request.setUrl (QUrl("http://www.ithome.com/ithome/login.aspx/btnLogin_Click"));
+    request.setRawHeader("Content-Type","application/json;charset=UTF-8");
+    request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+    manager->disconnect ();
+    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(loginFinished(QNetworkReply*)));
+    manager->post(request,array);
+}
+
+void Utility::getUserData()
+{
+    QByteArray useremail = settings.getValue ("useremail","").toByteArray ();
+    QByteArray password = settings.getValue ("password","").toByteArray ();
+    QByteArray userCookie = settings.getValue ("userCookie","").toByteArray ();
+    QByteArray array="__VIEWSTATE=%2FwEPDwULLTE2NDE0OTUzNDdkZE6LbmExHAKELUvSD6xNeDDjDMoySGjs%2FImZPyb7LxVE&__EVENTVALIDATION=%2FwEdAASMzcke4K6%2B%2FmhlLCC5yxK5QwdmH1m48FGJ7a8D8d%2BhEjPSlu16Yx4QbiDU%2BdddK1OinihG6d%2FXh3PZm3b5AoMQawkWeaYEoLRr9GEfQD6b8qZsV88ueVPDdbJYH29gPKc%3D&txtEmail="+useremail+"&txtPwd="+password+"&btnLogin=%E7%99%BB+%E5%BD%95";
+    QNetworkRequest request;
+    request.setUrl (QUrl("http://i.ruanmei.com"));
+    request.setRawHeader ("Cookie", userCookie);
+    request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+    request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+    manager->disconnect ();
+    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(getUserDataFinished(QNetworkReply*)));
+    manager->post(request, array);
 }
 
 Utility::~Utility()

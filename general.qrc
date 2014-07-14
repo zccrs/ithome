@@ -22,5 +22,8 @@
         <file>Image/icon_grade_middle_star_s.png</file>
         <file>Image/ithome_logo.png</file>
         <file>Image/save.svg</file>
+        <file>Image/level.png</file>
+        <file>Image/shade_inverse_symbian.svg</file>
+        <file>Image/shade_symbian.svg</file>
     </qresource>
 </RCC>

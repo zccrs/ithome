@@ -97,7 +97,8 @@ SOURCES += main.cpp \
     src/utility.cpp \
     src/threaddownloadimage.cpp \
     src/myxmllistmodel.cpp \
-    src/cache.cpp
+    src/cache.cpp \
+    src/mynetworkaccessmanagerfactory.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -123,7 +124,8 @@ HEADERS += \
     src/utility.h \
     src/threaddownloadimage.h \
     src/myxmllistmodel.h \
-    src/cache.h
+    src/cache.h \
+    src/mynetworkaccessmanagerfactory.h
 
 contains(MEEGO_EDITION,harmattan) {
     desktopfile.files = ithome.desktop
