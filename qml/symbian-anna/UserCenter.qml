@@ -4,9 +4,10 @@ import com.nokia.symbian 1.1
 import QtWebKit 1.0
 import "../general"
 MyPage{
+    id: user_center_main
     property real text_opacity: night_mode?brilliance_control:1
-    signal editUserInfo
-    signal showUserInfo
+    property string mode: "个人中心"
+    
     tools: CustomToolBarLayout{
         id:userCenterTool
         ToolButton{
@@ -20,30 +21,54 @@ MyPage{
             }
         }
         ToolButton{
-            id:moreInfo
-            text: "修改资料"
+            id:editInfo
+            visible: user_center_main.mode == "个人中心"
+            iconSource: {
+                if( true_name.mode == "show" ){
+                    return main.night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
+                }else{
+                    return "toolbar-mediacontrol-play"//main.night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
+                }
+            }
+
             opacity: main.night_mode?main.brilliance_control:1
             platformInverted: main.platformInverted
             onClicked: {
-                if( true_name.mode == true_name.show ){
-                    editUserInfo()
-                    text = "保存资料"
-                }
-
-                else{
-                    showUserInfo()
-                    text = "修改资料"
-                }
+                user_nick.modeSwitch()
+                true_name.modeSwitch()
+                user_qq.modeSwitch()
+                user_phone.modeSwitch()
+                user_address.modeSwitch()
+            }
+        }
+        
+        ToolButton{
+            id:quitLoginButton
+            visible: user_center_main.mode == "个人中心"
+            iconSource: "toolbar-mediacontrol-stop"
+            opacity: main.night_mode?main.brilliance_control:1
+            platformInverted: main.platformInverted
+            onClicked: {
+                quitLogin()
             }
         }
     }
+    
+    function quitLogin()
+    {
+        utility.consoleLog("调用了退出登陆")
+        settings.setValue("userCookie","")
+        user_center_main.mode = "登陆"
+        user_login.state = "show"
+    }
+    
     Image{
         id:header
         opacity: text_opacity
         width: parent.width
         source: "qrc:/Image/PageHeader.svg"
         Text{
-            text:"个人中心"
+            text:user_center_main.mode
             font.pixelSize: 22
             color: "white"
             x:10
@@ -52,6 +77,8 @@ MyPage{
     }
     Image{
         id:user_avatar
+        cache: false
+        visible: user_center_main.mode == "个人中心"
         source: "../general/avatar.jpg"
         anchors.top: header.bottom
         anchors.topMargin: 10
@@ -64,18 +91,44 @@ MyPage{
             smooth: true
         }
     }
-    Text {
+    Item{
         id: user_nick
-        color: main.night_mode?"#f0f0f0":"#282828"
-        opacity: night_mode?brilliance_control:1
-        text: settings.getValue("UserNick","")
-        font.pixelSize: 26
+        visible: user_center_main.mode == "个人中心"
         anchors.top: user_avatar.top
         anchors.left: user_avatar.right
         anchors.leftMargin: 10
+        width: user_nick_show.width
+        height: user_nick_show.height
+        property string mode:"show"
+        property alias text: user_nick_show.text
+        function modeSwitch()
+        {
+            if( mode=="show" )
+                mode = "edit"
+            else
+                mode = "show"
+        }
+        Text {
+            id:user_nick_show
+            visible: user_nick.mode == "show"
+            color: main.night_mode?"#f0f0f0":"#282828"
+            opacity: night_mode?brilliance_control:1
+            text: settings.getValue("UserNick","")
+            font.pixelSize: 26
+        }
+        TextField{
+            id:user_nick_input
+            visible: user_nick.mode == "edit"
+            font.pixelSize: 18
+            platformInverted: main.platformInverted
+            anchors.fill: parent
+            text: user_nick_show.text
+        }
     }
+
     Text {
         id: level_text
+        visible: user_center_main.mode == "个人中心"
         color: main.night_mode?"#f0f0f0":"#000000"
         opacity: night_mode?brilliance_control:1
         text: "LV"+settings.getValue("UserLevel",0)
@@ -86,6 +139,7 @@ MyPage{
     }
     Text {
         id: level_state
+        visible: user_center_main.mode == "个人中心"
         color: main.night_mode?"#f0f0f0":"#282828"
         opacity: night_mode?brilliance_control:0.6
         text: settings.getValue("LevelState","")
@@ -97,12 +151,12 @@ MyPage{
     Connections{
         target: cacheContent
         onImageDownloadFinish:{
-            user_avatar.source = ""
             user_avatar.source = "../general/avatar.jpg"
         }
     }
     Text {
         id: account_info
+        visible: user_center_main.mode == "个人中心"
         color: main.night_mode?"#f0f0f0":"#282828"
         opacity: night_mode?brilliance_control:0.6
         anchors.left: user_avatar.left
@@ -114,10 +168,12 @@ MyPage{
     
     CuttingLine{
         id:cut_off
+        visible: user_center_main.mode == "个人中心"
         anchors.top: account_info.bottom
     }
     TitleAndTextField{
         id: true_name
+        visible: user_center_main.mode == "个人中心"
         anchors.top: cut_off.bottom
         anchors.topMargin: 10
         title: "真实姓名"
@@ -125,6 +181,7 @@ MyPage{
     }
     TitleAndTextField{
         id: user_qq
+        visible: user_center_main.mode == "个人中心"
         anchors.top: true_name.bottom
         anchors.topMargin: 10
         title: "腾讯企鹅"
@@ -132,6 +189,7 @@ MyPage{
     }
     TitleAndTextField{
         id: user_phone
+        visible: user_center_main.mode == "个人中心"
         anchors.top: user_qq.bottom
         anchors.topMargin: 10
         title: "联系方式"
@@ -139,6 +197,7 @@ MyPage{
     }
     TitleAndTextField{
         id: user_address
+        visible: user_center_main.mode == "个人中心"
         anchors.top: user_phone.bottom
         anchors.topMargin: 10
         title: "联系地址"
@@ -236,16 +295,33 @@ MyPage{
     Connections{
         target: utility
         onGetUserDataOk:{
-            webview.html = replyData
+            if(replyData.indexOf("<head><title>Object moved</title></head>")>=0){
+                user_center_main.mode = "登陆"
+                user_login.state = "show"
+            }
+            
+            else
+                webview.html = replyData
         }
     }
 
+    LoginPage{
+        id: user_login
+        height: 494
+        onLoginOK: {
+            utility.getUserData()
+            user_center_main.mode = "个人中心"
+        }
+    }
+    
     Component.onCompleted: {
         var cookie = settings.getValue("userCookie","")
         if( cookie!="" ){
             utility.getUserData()
         }else{
             utility.consoleLog("需要登陆")
+            user_center_main.mode = "登陆"
+            user_login.state = "show"
         }
     }
 }

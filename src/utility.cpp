@@ -1,5 +1,7 @@
 ﻿#include "utility.h"
 #include <QDebug>
+#include <QImage>
+#include <QFile>
 
 Utility::Utility(QObject *parent) :
     QObject(parent)
@@ -57,8 +59,6 @@ void Utility::postHttp(const QString postUrl,const QString postData)
     request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=gb2312");/*设置http请求头，不然塞班真机会出现问题*/
     request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
     request.setRawHeader ("Cookie", settings.getValue ("userCookie","").toByteArray ());
-    manager->disconnect ();
-    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(replyFinished(QNetworkReply*)));
     manager->post(request,array);
 }
 void Utility::replyFinished(QNetworkReply *replys)
@@ -83,7 +83,7 @@ void Utility::loginFinished(QNetworkReply *replys)
         int pos_end2 = cookie_temp.indexOf (";", pos_begin2);
         
         cookie_temp = cookie_temp.mid (0, pos_end1+1)+cookie_temp.mid (pos_begin2, pos_end2-pos_begin2);
-        
+        replys->manager ()->deleteLater ();//销毁这个对象
         emit loginOk (string, cookie_temp);
     }
 }
@@ -108,9 +108,27 @@ void Utility::getUserDataFinished(QNetworkReply *replys)
 
             manager_temp->get (request);
         }else{
-            replys->manager ()->deleteLater ();
+            //qDebug ()<<QString::fromUtf8 ("获取用户资料完成")<<string;
             emit getUserDataOk (string);
         }
+        replys->manager ()->deleteLater ();
+    }
+}
+
+void Utility::getCodeFinished(QNetworkReply *replys)
+{
+    if(replys->error() == QNetworkReply::NoError)
+    {
+        QByteArray byte = replys->readAll ();
+        QImage image;
+        image.loadFromData (byte);
+        qDebug ()<<byte;
+        //QFile::remove (cacheImagePrefix ()+"code.gif");
+        if(image.save (cacheImagePrefix ()+"code.jpg"))
+            qDebug ()<<QString::fromUtf8 ("验证码保存成功");
+        else
+            qDebug ()<<QString::fromUtf8 ("验证码保存失败");
+        emit getCodeOk (replys->rawHeader ("Set-Cookie"));
     }
 }
 
@@ -453,9 +471,9 @@ void Utility::login(QByteArray useremail, QByteArray password)
     request.setUrl (QUrl("http://www.ithome.com/ithome/login.aspx/btnLogin_Click"));
     request.setRawHeader("Content-Type","application/json;charset=UTF-8");
     request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
-    manager->disconnect ();
-    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(loginFinished(QNetworkReply*)));
-    manager->post(request,array);
+    QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
+    connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(loginFinished(QNetworkReply*)));
+    manager_temp->post(request,array);
 }
 
 void Utility::getUserData()
@@ -469,9 +487,22 @@ void Utility::getUserData()
     request.setRawHeader ("Cookie", userCookie);
     request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
     request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
-    manager->disconnect ();
-    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(getUserDataFinished(QNetworkReply*)));
-    manager->post(request, array);
+    QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
+    connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(getUserDataFinished(QNetworkReply*)));
+    manager_temp->post(request, array);
+}
+
+void Utility::getCode()
+{
+    QByteArray userCookie = settings.getValue ("userCookie","").toByteArray ();
+    QNetworkRequest request;
+    request.setUrl (QUrl("http://i.ruanmei.com/validate.aspx?0.35169164060298474"));
+    request.setRawHeader ("Cookie", userCookie);
+    request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+    request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+    QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
+    connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(getCodeFinished(QNetworkReply*)));
+    manager_temp->get(request);
 }
 
 Utility::~Utility()

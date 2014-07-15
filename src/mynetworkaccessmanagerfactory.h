@@ -21,6 +21,7 @@ private:
 class NetworkAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
+
 public:
     explicit NetworkAccessManager(QObject *parent = 0);
 protected:

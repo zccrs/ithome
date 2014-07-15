@@ -31,5 +31,8 @@
         <file>Image/slider-1.png</file>
         <file>Image/slider-2.png</file>
         <file>Image/slider-3.png</file>
+        <file>Image/userCenter_symbian.svg</file>
+        <file>Image/userCenter_symbian_inverse.svg</file>
+        <file>Image/ithome.svg</file>
     </qresource>
 </RCC>

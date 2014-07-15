@@ -36,7 +36,7 @@ MyPage{
             id: userCenter
             opacity: night_mode?brilliance_control:1
             platformInverted: main.platformInverted
-            iconSource: "toolbar-home"
+            iconSource: night_mode?"qrc:/Image/userCenter_symbian.svg" : "qrc:/Image/userCenter_symbian_inverse.svg"
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("UserCenter.qml"))
             }

@@ -47,10 +47,12 @@ private slots:
     void replyFinished(QNetworkReply* replys);//当post结束时调用
     void loginFinished(QNetworkReply* replys);//当登陆完成时调用
     void getUserDataFinished(QNetworkReply* replys);//获取用户信息完成时调用
+    void getCodeFinished(QNetworkReply* replys);//验证码获取成功
 signals:
     void postOk(QString returnData);//给qml信号
     void loginOk(QString replyData, QString replyCookie);//发送登陆完成后的信号
     void getUserDataOk( QString replyData );
+    void getCodeOk( QString replyData );
 private:
     QNetworkAccessManager *manager;
     Settings settings;
@@ -76,6 +78,7 @@ public slots:
     
     void login(QByteArray useremail, QByteArray password);
     void getUserData();
+    void getCode();//获取验证码
 };
 
 #endif // UTILITY_H

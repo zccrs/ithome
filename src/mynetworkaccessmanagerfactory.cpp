@@ -1,5 +1,7 @@
 #include "mynetworkaccessmanagerfactory.h"
+#include "settings.h"
 #include <QUrl>
+#include <QDebug>
 
 MyNetworkAccessManagerFactory::MyNetworkAccessManagerFactory(QObject *parent) :
     QObject(parent)
@@ -29,7 +31,6 @@ QNetworkAccessManager* MyNetworkAccessManagerFactory::create(QObject *parent)
         diskCache->setMaximumCacheSize(3*1024*1024);
         manager->setCache(diskCache);
     }
-
     QNetworkCookieJar* cookieJar = NetworkCookieJar::GetInstance();
     manager->setCookieJar(cookieJar);
     cookieJar->setParent(0);
@@ -51,7 +52,6 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent) :
 QNetworkReply *NetworkAccessManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest req(request);
-
     QSslConfiguration config;
 
     config.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -63,6 +63,8 @@ QNetworkReply *NetworkAccessManager::createRequest(Operation op, const QNetworkR
     } else {
         req.setRawHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0_4 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11B554a Safari/9537.53");
     }
+    Settings settings;
+    req.setRawHeader ("Cookie", settings.getValue ("userCookie","").toByteArray ());
 
     QNetworkReply *reply = QNetworkAccessManager::createRequest(op, req, outgoingData);
     return reply;
@@ -104,4 +106,3 @@ bool NetworkCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList
     Q_UNUSED(lock);
     return QNetworkCookieJar::setCookiesFromUrl(cookieList, url);
 }
-

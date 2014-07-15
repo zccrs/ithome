@@ -24,13 +24,13 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     splash->raise();
 #endif
 
-//#if defined(Q_WS_SIMULATOR)
+#if defined(Q_WS_SIMULATOR)
     QNetworkProxy proxy;
     proxy.setType(QNetworkProxy::HttpProxy);
     proxy.setHostName("localhost");
     proxy.setPort(8888);
     QNetworkProxy::setApplicationProxy(proxy);
-//#endif
+#endif
     //int width=QApplication::desktop()->width();
     //int height=QApplication::desktop()->height();
     app->setApplicationName (QString::fromUtf8("IT之家"));
