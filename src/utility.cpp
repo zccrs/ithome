@@ -10,6 +10,7 @@ Utility::Utility(QObject *parent) :
 
     queue_begin=queue_end=0;
     manager = new QNetworkAccessManager(this);
+    connect (manager, SIGNAL(finished(QNetworkReply*)), SLOT(replyFinished(QNetworkReply*)));
 #if defined(Q_OS_HARMATTAN)
     prefix = QDir::homePath()+"/.ithome";
     coding="utf-8";
@@ -77,12 +78,7 @@ void Utility::loginFinished(QNetworkReply *replys)
     {
         QString string=replys->readAll();
         QString cookie_temp = replys->rawHeader ("Set-Cookie");
-        qDebug ()<<cookie_temp;
-        int pos_end1 = cookie_temp.indexOf (";");
-        int pos_begin2 = cookie_temp.indexOf ("user=username=");
-        int pos_end2 = cookie_temp.indexOf (";", pos_begin2);
         
-        cookie_temp = cookie_temp.mid (0, pos_end1+1)+cookie_temp.mid (pos_begin2, pos_end2-pos_begin2);
         replys->manager ()->deleteLater ();//销毁这个对象
         emit loginOk (string, cookie_temp);
     }
@@ -122,13 +118,32 @@ void Utility::getCodeFinished(QNetworkReply *replys)
         QByteArray byte = replys->readAll ();
         QImage image;
         image.loadFromData (byte);
-        qDebug ()<<byte;
-        //QFile::remove (cacheImagePrefix ()+"code.gif");
+
         if(image.save (cacheImagePrefix ()+"code.jpg"))
             qDebug ()<<QString::fromUtf8 ("验证码保存成功");
         else
             qDebug ()<<QString::fromUtf8 ("验证码保存失败");
         emit getCodeOk (replys->rawHeader ("Set-Cookie"));
+        replys->manager ()->deleteLater ();
+    }
+}
+
+void Utility::registerUserGeneralFinished(QNetworkReply *replys)
+{
+    if(replys->error() == QNetworkReply::NoError)
+    {
+        QByteArray data = replys->readAll ();
+        if(replys->url () == QUrl( "http://i.ruanmei.com/reg.aspx/EmailExist" ) )
+            emit testEmailOk(data);
+        else if( replys->url () == QUrl( "http://i.ruanmei.com/reg.aspx/PostRegemail" ) ){
+            emit registerUserOk (QString::fromUtf8 (data));
+        }else if( replys->url () == QUrl( "http://i.ruanmei.com/m/forgetPassword.aspx/btnSubmit_Click" ) ){
+            registerUserGeneral("", "http://i.ruanmei.com/m/" + data.split ('"')[3]);
+        }else if( replys->url () == QUrl( "http://i.ruanmei.com/m/forgetPassword1.aspx/ModifyPassword" ) ){
+            emit passwordEditOk (QString::fromUtf8 (data));
+        }
+            
+        replys->manager ()->deleteLater ();
     }
 }
 
@@ -503,6 +518,23 @@ void Utility::getCode()
     QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
     connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(getCodeFinished(QNetworkReply*)));
     manager_temp->get(request);
+}
+
+void Utility::registerUserGeneral(QByteArray data, QByteArray url )
+{
+    QNetworkRequest request;
+    request.setUrl (QUrl(url));
+    if( url != "http://i.ruanmei.com/reg.aspx/EmailExist" )
+        request.setRawHeader ("Cookie", settings.getValue ("CodeCookie","").toByteArray () );
+    request.setRawHeader("Content-Type","application/json; charset=utf-8");
+    request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+
+    QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
+    connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(registerUserGeneralFinished(QNetworkReply*)));
+    if( data=="" )
+        manager_temp->get (request);
+    else
+        manager_temp->post(request, data);
 }
 
 Utility::~Utility()

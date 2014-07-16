@@ -114,9 +114,15 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/changelog \
     qml/symbian-v3/* \
     qml/symbian-v5/* \
-    qml/meego/*
+    qml/meego/* \
+    qml/symbian-v5/UserCenter.qml \
+    qml/symbian-v5/TitleAndTextField.qml \
+    qml/symbian-v5/RetrievePassword.qml \
+    qml/symbian-v5/RegisterAccount.qml \
+    qml/symbian-v5/LoginPage.qml
 
-RESOURCES += general.qrc
+RESOURCES += \
+    general.qrc
 
 HEADERS += \
     #src/myimage.h \

@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
-import com.nokia.symbian 1.1
+import QtQuick 1.0
+import com.nokia.symbian 1.0
 import QtWebKit 1.0
 import "../general"
 MyPage{
@@ -14,7 +14,6 @@ MyPage{
             id:backButton
             iconSource: main.night_mode?"qrc:/Image/back2.svg":"qrc:/Image/back.svg"
             opacity: main.night_mode?main.brilliance_control:1
-            platformInverted: main.platformInverted
             onClicked: {
                 main.current_page="setting"
                 pageStack.pop()
@@ -32,7 +31,7 @@ MyPage{
             }
 
             opacity: main.night_mode?main.brilliance_control:1
-            platformInverted: main.platformInverted
+            
             onClicked: {
                 user_nick.modeSwitch()
                 true_name.modeSwitch()
@@ -47,7 +46,7 @@ MyPage{
             visible: user_center_main.mode == "个人中心"
             iconSource: "toolbar-mediacontrol-stop"
             opacity: main.night_mode?main.brilliance_control:1
-            platformInverted: main.platformInverted
+            
             onClicked: {
                 quitLogin()
             }
@@ -77,7 +76,6 @@ MyPage{
     }
     Image{
         id:user_avatar
-        cache: false
         visible: user_center_main.mode == "个人中心"
         source: "../general/avatar.jpg"
         anchors.top: header.bottom
@@ -86,7 +84,7 @@ MyPage{
         anchors.leftMargin: 10
         sourceSize.width:80
         Image {
-            source: main.night_mode?"qrc:/Image/shade_inverse_symbian.svg":"qrc:/Image/shade_symbian.svg"
+            source: main.night_mode?"qrc:/Image/shade_symbian_inverse.svg":"qrc:/Image/shade_symbian.svg"
             anchors.fill: parent
             smooth: true
         }
@@ -120,7 +118,7 @@ MyPage{
             id:user_nick_input
             visible: user_nick.mode == "edit"
             font.pixelSize: 18
-            platformInverted: main.platformInverted
+            
             anchors.fill: parent
             text: user_nick_show.text
         }
@@ -151,7 +149,6 @@ MyPage{
     Connections{
         target: cacheContent
         onImageDownloadFinish:{
-            user_avatar.source=""
             user_avatar.source = "../general/avatar.jpg"
         }
     }

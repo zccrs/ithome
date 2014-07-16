@@ -20,12 +20,6 @@ MyPage{
                     signature_input.placeholderText=signature_input.text
                     signature_input.text=""
                 }
-                if(nickname_input.text!="")
-                {
-                    settings.setValue("name",nickname_input.text)
-                    nickname_input.placeholderText=nickname_input.text
-                    nickname_input.text=""
-                }
 
                 pageStack.pop()
                 if(loading)
@@ -33,7 +27,16 @@ MyPage{
             }
         }
         ToolButton{
+            id: userCenter
+            opacity: night_mode?brilliance_control:1
+            iconSource: night_mode?"qrc:/Image/userCenter_symbian.svg" : "qrc:/Image/userCenter_symbian_inverse.svg"
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("UserCenter.qml"))
+            }
+        }
+        ToolButton{
             id:deleteButton
+            opacity: night_mode?brilliance_control:1
             iconSource: night_mode?"toolbar-delete":"qrc:/Image/toolbar-delete_inverse.svg"
             Connections{
                 target: cacheContent
@@ -57,7 +60,7 @@ MyPage{
         }
         ToolButton{
             id:aboutButton
-
+            opacity: night_mode?brilliance_control:1
             iconSource: night_mode?"qrc:/Image/about_symbian.svg":"qrc:/Image/about_inverse_symbian.svg"
             onClicked: {
                 current_page="about"
@@ -232,7 +235,7 @@ MyPage{
             id:cut_off2
             anchors.top: intensity_control.bottom
         }
-        Text{
+        /*Text{
             id:my_phone
             text:"我的设备"
             font.pixelSize: 22
@@ -305,7 +308,7 @@ MyPage{
                     }
                 }
             }
-        }
+        }*/
 
         Text{
             id:my_signature
@@ -326,12 +329,10 @@ MyPage{
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: my_phone.bottom
+            anchors.top: cut_off2.bottom
             anchors.topMargin:20
-            KeyNavigation.up: nickname_input
-            KeyNavigation.down: nickname_input
         }
-        Text{
+        /*Text{
             id:my_nickname
             text:"我的昵称"
             anchors.left: parent.left
@@ -353,7 +354,7 @@ MyPage{
             anchors.topMargin:20
             KeyNavigation.up: signature_input
             KeyNavigation.down: signature_input
-        }
+        }*/
         Keys.onPressed: {
             utility.consoleLog("按键键值是："+event.key)
             if(event.key===16842752)
@@ -372,7 +373,7 @@ MyPage{
         //onContentYChanged: console.log("setting page flick ContentY:"+settingFlick.contentY)
         CuttingLine{
             id:cut_off3
-            anchors.top: nickname_input.bottom
+            anchors.top: signature_input.bottom
         }
         Text{
             id:remove_cache

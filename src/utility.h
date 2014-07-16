@@ -48,11 +48,15 @@ private slots:
     void loginFinished(QNetworkReply* replys);//当登陆完成时调用
     void getUserDataFinished(QNetworkReply* replys);//获取用户信息完成时调用
     void getCodeFinished(QNetworkReply* replys);//验证码获取成功
+    void registerUserGeneralFinished(QNetworkReply* replys);//测试邮箱是否可用完成
 signals:
     void postOk(QString returnData);//给qml信号
     void loginOk(QString replyData, QString replyCookie);//发送登陆完成后的信号
     void getUserDataOk( QString replyData );
     void getCodeOk( QString replyData );
+    void testEmailOk( QByteArray replyData );
+    void registerUserOk( QString replyData );
+    void passwordEditOk( QString replyData );//找回密码返回的数据
 private:
     QNetworkAccessManager *manager;
     Settings settings;
@@ -79,6 +83,7 @@ public slots:
     void login(QByteArray useremail, QByteArray password);
     void getUserData();
     void getCode();//获取验证码
+    void registerUserGeneral( QByteArray data, QByteArray url="http://i.ruanmei.com/reg.aspx/EmailExist" );
 };
 
 #endif // UTILITY_H
