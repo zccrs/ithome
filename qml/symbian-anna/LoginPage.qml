@@ -7,6 +7,16 @@ Item{
     signal loginOK
     state: "hide"
 
+    Connections{
+        target: user_center_main
+        onModeChanged:{
+            if( user_center_main.mode=="登陆" ){
+                user_login.state = "show"
+                flipable.state = "front"
+            }
+        }
+    }
+    
     transitions: [
         Transition {
             from: "show"
@@ -117,7 +127,7 @@ Item{
             text: "登        陆"
             font.pixelSize: 18
             anchors.top: radio_row.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: 10
             
             width: parent.width*0.6
             platformInverted: main.platformInverted
@@ -171,6 +181,7 @@ Item{
                     anchors.fill: parent
                     onClicked: {
                         user_center_main.mode = parent.text
+                        flipable.state = "back"
                     }
                     onPressed: parent.color = "red"
                     onReleased: parent.color = "blue"
@@ -184,6 +195,7 @@ Item{
                     anchors.fill: parent
                     onClicked: {
                         user_center_main.mode = parent.text
+                        flipable.state = "back"
                     }
                     onPressed: parent.color = "red"
                     onReleased: parent.color = "blue"
@@ -191,31 +203,6 @@ Item{
             }
         }
     }
-    RegisterAccount{
-        id: register_account_page
-        visible: user_center_main.mode == "注册账号"
-        onVisibleChanged: {
-            if( visible ){
-                flipable.back = register_account_page
-                flipable.state = "back"
-            }else{
-                flipable.state = "front"
-            }
-        }
-    }//注册账号
-    RetrievePassword{
-        id: retrieve_password_page
-        visible: user_center_main.mode == "找回密码"
-        onVisibleChanged: {
-            if( visible ){
-                flipable.back = retrieve_password_page
-                flipable.state = "back"
-            }else{
-                flipable.state = "front"
-            }
-        }
-    }//找回密码
-    
 
     Flipable {
          id: flipable
@@ -224,7 +211,19 @@ Item{
     
          front: login_page
          state:"front"
-
+         
+         back:Item {
+             anchors.fill: parent
+             RegisterAccount{
+                 id: register_account_page
+                 visible: user_center_main.mode == "注册账号"
+             }
+             RetrievePassword{
+                 id: retrieve_password_page
+                 visible: user_center_main.mode == "找回密码"
+             }//找回密码
+         }
+         
          transform: Rotation {
              id: rotation
              origin.x: flipable.width/2

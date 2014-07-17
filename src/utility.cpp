@@ -95,7 +95,7 @@ void Utility::getUserDataFinished(QNetworkReply *replys)
             request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
             request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
             QString cookie = settings.getValue ("userCookie","").toString ();
-            qDebug ()<<cookie;
+           
             cookie = cookie.mid (0,cookie.indexOf (";")+1);
             qDebug ()<<cookie.toLatin1 ();
             request.setRawHeader ("Cookie", cookie.toLatin1 ());
@@ -104,9 +104,22 @@ void Utility::getUserDataFinished(QNetworkReply *replys)
 
             manager_temp->get (request);
         }else{
-            //qDebug ()<<QString::fromUtf8 ("获取用户资料完成")<<string;
             emit getUserDataOk (string);
         }
+        replys->manager ()->deleteLater ();
+    }
+}
+
+void Utility::setUserDataFinished(QNetworkReply *replys)
+{
+    if(replys->error() == QNetworkReply::NoError)
+    {
+        QString string=QString::fromUtf8 (replys->readAll ());
+        QStringList list = string.split ('\'');
+        if( list.count ()>3 )
+            emit setUserDataOk (list[3]);
+        else
+            emit setUserDataOk (string);
         replys->manager ()->deleteLater ();
     }
 }
@@ -496,7 +509,8 @@ void Utility::getUserData()
     QByteArray useremail = settings.getValue ("useremail","").toByteArray ();
     QByteArray password = settings.getValue ("password","").toByteArray ();
     QByteArray userCookie = settings.getValue ("userCookie","").toByteArray ();
-    QByteArray array="__VIEWSTATE=%2FwEPDwULLTE2NDE0OTUzNDdkZE6LbmExHAKELUvSD6xNeDDjDMoySGjs%2FImZPyb7LxVE&__EVENTVALIDATION=%2FwEdAASMzcke4K6%2B%2FmhlLCC5yxK5QwdmH1m48FGJ7a8D8d%2BhEjPSlu16Yx4QbiDU%2BdddK1OinihG6d%2FXh3PZm3b5AoMQawkWeaYEoLRr9GEfQD6b8qZsV88ueVPDdbJYH29gPKc%3D&txtEmail="+useremail+"&txtPwd="+password+"&btnLogin=%E7%99%BB+%E5%BD%95";
+    QByteArray array;
+    array="__VIEWSTATE=%2FwEPDwULLTE2NDE0OTUzNDdkZE6LbmExHAKELUvSD6xNeDDjDMoySGjs%2FImZPyb7LxVE&__EVENTVALIDATION=%2FwEdAASMzcke4K6%2B%2FmhlLCC5yxK5QwdmH1m48FGJ7a8D8d%2BhEjPSlu16Yx4QbiDU%2BdddK1OinihG6d%2FXh3PZm3b5AoMQawkWeaYEoLRr9GEfQD6b8qZsV88ueVPDdbJYH29gPKc%3D&txtEmail="+useremail+"&txtPwd="+password+"&btnLogin=%E7%99%BB+%E5%BD%95";
     QNetworkRequest request;
     request.setUrl (QUrl("http://i.ruanmei.com"));
     request.setRawHeader ("Cookie", userCookie);
@@ -505,6 +519,26 @@ void Utility::getUserData()
     QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
     connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(getUserDataFinished(QNetworkReply*)));
     manager_temp->post(request, array);
+}
+
+void Utility::setUserData( QString data, QString url )
+{
+    QTextCodec *codec = QTextCodec::codecForName("gb2312");
+    QByteArray array=codec->fromUnicode(data);
+    
+    QNetworkRequest request;
+    request.setUrl (QUrl(url));
+    request.setRawHeader("Content-Type","application/x-www-form-urlencoded;charset=gb2312");
+    request.setRawHeader ("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36 LBBROWSER");
+    QString cookie = settings.getValue ("userCookie","").toString ();
+   
+    cookie = cookie.mid (0,cookie.indexOf (";")+1);
+
+    request.setRawHeader ("Cookie", cookie.toLatin1 ());
+    QNetworkAccessManager *manager_temp = new QNetworkAccessManager(this);
+    connect(manager_temp, SIGNAL(finished(QNetworkReply*)),this, SLOT(setUserDataFinished(QNetworkReply*)));
+
+    manager_temp->post (request, array);
 }
 
 void Utility::getCode()

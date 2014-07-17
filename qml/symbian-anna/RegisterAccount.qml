@@ -85,7 +85,7 @@ Item{
         text: "注        册"
         font.pixelSize: 18
         anchors.top: input_code.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         
         width: parent.width*0.6
         platformInverted: main.platformInverted

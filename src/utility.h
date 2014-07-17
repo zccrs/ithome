@@ -47,12 +47,14 @@ private slots:
     void replyFinished(QNetworkReply* replys);//当post结束时调用
     void loginFinished(QNetworkReply* replys);//当登陆完成时调用
     void getUserDataFinished(QNetworkReply* replys);//获取用户信息完成时调用
+    void setUserDataFinished(QNetworkReply* replys);//获取用户信息完成时调用
     void getCodeFinished(QNetworkReply* replys);//验证码获取成功
     void registerUserGeneralFinished(QNetworkReply* replys);//测试邮箱是否可用完成
 signals:
     void postOk(QString returnData);//给qml信号
     void loginOk(QString replyData, QString replyCookie);//发送登陆完成后的信号
-    void getUserDataOk( QString replyData );
+    void getUserDataOk( QString replyData );// 读取用户信息完成的信号
+    void setUserDataOk( QString replyData );//设置用户信息完成的信号
     void getCodeOk( QString replyData );
     void testEmailOk( QByteArray replyData );
     void registerUserOk( QString replyData );
@@ -64,8 +66,8 @@ public slots:
     bool imageIsShow(const QString name);//name=图片类型（标题图片还是文章图）+文章id
     void imageToShow(const QString name);//记录用户点击过的每一个标题图片或者文章图片，以方便下次打开时在显示这个图片
 
-    bool inQueue(const QString sid);//进队
-    QString outQueue();//出队
+    bool inQueue(const QString sid);//将需要获取的新闻进队
+    QString outQueue();//将需要获取的新闻sid出队去网络请求
     void consoleLog(QString string);//用了在控制台显示qml过来的中文，防止乱码
     QString saveImageToLocality(const QString imageSrc);
     void setClipboard(const QString string);//操作剪切板
@@ -82,6 +84,7 @@ public slots:
     
     void login(QByteArray useremail, QByteArray password);
     void getUserData();
+    void setUserData( QString data, QString url="http://i.ruanmei.com/usercenter/base.aspx" );//修改用户资料
     void getCode();//获取验证码
     void registerUserGeneral( QByteArray data, QByteArray url="http://i.ruanmei.com/reg.aspx/EmailExist" );
 };

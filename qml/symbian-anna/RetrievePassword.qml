@@ -107,7 +107,7 @@ Item{
             if( input_newPassword.text === input_rePassword.text )
                 utility.registerUserGeneral("{'strCheckcode':  '"+input_email_code.text+"' , 'password':'"+input_newPassword.text+"'  , 'rpassword':'"+input_rePassword.text+"' }","http://i.ruanmei.com/m/forgetPassword1.aspx/ModifyPassword")
             else
-                showBanner("密码不一致")
+                showBanner("两次输入新密码不一致")
         }
     }
 

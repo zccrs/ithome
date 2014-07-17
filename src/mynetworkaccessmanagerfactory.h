@@ -28,7 +28,7 @@ protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData);
 };
 
-class NetworkCookieJar : public QNetworkCookieJar
+/*class NetworkCookieJar : public QNetworkCookieJar
 {
 public:
     static NetworkCookieJar* GetInstance();
@@ -43,6 +43,6 @@ private:
 
     mutable QMutex mutex;
     QNetworkCookie keepAliveCookie;
-};
+};*/
 
 #endif // MYNETWORKACCESSMANAGERFACTORY_H

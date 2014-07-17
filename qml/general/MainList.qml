@@ -31,7 +31,6 @@ Item {//
     Connections{
         target: main
         onLoadingChanged:{
-
             if(!loading&addListViewCount>0)
             {
                 //utility.consoleLog("新增")
@@ -57,6 +56,7 @@ Item {//
                 maxnewsidData=0
                 minnewsidData=99999999
                 listmodel.clear()
+                
                 xmlModel.beginPost("http://www.ithome.com/rss/news.xml",zone)//获取最新资讯
             }
             else{
@@ -249,10 +249,10 @@ Item {//
             else if(status==XmlListModel.Error)
             {
                 console.log("xmlModel status:Error:"+addxmlmodel.errorString())
-                //showBanner(xmlModel.errorString())
             }
         }
     }
+    
     MyLiseView{
         id:listview
         y:sysIsSymbian_v3?0:pageheader.height
@@ -271,8 +271,9 @@ Item {//
                 up.opacity=1
         }
         Keys.onPressed:mainlist.buttonPress(event.key)
+        
     }
-
+    
     Image{
         id:up
         opacity: 0

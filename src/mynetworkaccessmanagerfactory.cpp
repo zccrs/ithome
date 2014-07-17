@@ -16,25 +16,6 @@ QNetworkAccessManager* MyNetworkAccessManagerFactory::create(QObject *parent)
     Q_UNUSED(lock);
     QNetworkAccessManager* manager = new NetworkAccessManager(parent);
 
-#ifdef Q_OS_SYMBIAN
-    bool useDiskCache = QT_VERSION >= 0x040800;
-#else
-    bool useDiskCache = true;
-#endif
-    if (useDiskCache){
-        QNetworkDiskCache* diskCache = new QNetworkDiskCache(parent);
-        QString dataPath = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-        QDir dir(dataPath);
-        if (!dir.exists()) dir.mkpath(dir.absolutePath());
-
-        diskCache->setCacheDirectory(dataPath);
-        diskCache->setMaximumCacheSize(3*1024*1024);
-        manager->setCache(diskCache);
-    }
-    QNetworkCookieJar* cookieJar = NetworkCookieJar::GetInstance();
-    manager->setCookieJar(cookieJar);
-    cookieJar->setParent(0);
-
     return manager;
 }
 
@@ -70,7 +51,7 @@ QNetworkReply *NetworkAccessManager::createRequest(Operation op, const QNetworkR
     return reply;
 }
 
-NetworkCookieJar::NetworkCookieJar(QObject *parent) :
+/*NetworkCookieJar::NetworkCookieJar(QObject *parent) :
     QNetworkCookieJar(parent)
 {
     keepAliveCookie = QNetworkCookie("ka", "open");
@@ -105,4 +86,4 @@ bool NetworkCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList
     QMutexLocker lock(&mutex);
     Q_UNUSED(lock);
     return QNetworkCookieJar::setCookiesFromUrl(cookieList, url);
-}
+}*/

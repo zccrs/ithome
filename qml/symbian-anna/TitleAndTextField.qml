@@ -6,7 +6,7 @@ Item {
     height: input.height
     width: parent.width
     property string title: ""
-    property string content: ""
+    property alias content: input.text
     property string mode:"show"
     property int fontSize: 18
     
@@ -41,7 +41,6 @@ Item {
     }
     TextField{
         id:input
-        text: content
         visible: mode == "edit"
         font.pixelSize: fontSize
         platformInverted: main.platformInverted

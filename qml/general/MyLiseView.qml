@@ -9,7 +9,13 @@ ListView {
     height: parent.height-y
     clip: sysIsSymbian_v3?false:true//必须开启，不然夜间模式的时候因为状态栏有透明度会将其显示出来
     model: listmodel
-    delegate: MyLiseComponent{id:delegate}
+    delegate: Component{
+        Loader{
+            width: parent.width
+            source: index == 0?"SlideNewsView.qml":"MyLiseComponent.qml"
+            //Component.onCompleted: utility.consoleLog("index是："+index+" "+source)
+        }
+    }
     maximumFlickVelocity: 2800
     width: parent.width
 
