@@ -22,7 +22,7 @@ Rectangle {
         target: isHighlight?null:main
         onBrilliance_controlChanged:{
             if(main.night_mode)
-                titleimage.opacity=brilliance_control
+                titleimage.opacity=main.brilliance_control
         }
     }
     Image{
@@ -167,7 +167,7 @@ Rectangle {
                 cacheContent.saveContent(newsid,detail)
             }
             main.current_page="content"
-            yiyue.visible=true
+            yiyue.visible=true//显示已经阅读
             settings.setValue("titleTextClock"+String(newsid),true)
 
             //console.log("utility.imageIsShow="+utility.imageIsShow("contentImage"+String(newsid)))

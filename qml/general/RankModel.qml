@@ -50,7 +50,8 @@ Item{
                              "newssource":"",
                              "newsauthor":"",
                              "isHighlight":true,
-                             "m_text":mytype
+                             "m_text":mytype,
+                             "loaderSource": "MyLiseComponent.qml"
                             })
                 for(var i=0;i<rankmodel.count;++i){
                     utility.inQueue(get(i).newsid)

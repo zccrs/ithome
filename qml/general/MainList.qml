@@ -40,13 +40,35 @@ Item {//
         }
     }
 
-    function headerHide(){
+    function headerHide(){//隐藏header
         page.pushContent()
     }
 
+    function updataSlide()//刷新大海报
+    {
+        if( listmodel.count>0 )
+            listmodel.remove(0)
+        listmodel.insert(0, {"title":"",
+                             "m_url":"",
+                             "image":"",
+                             "description":"",
+                             "detail":"",
+                             "newsid":"",
+                             "hitcount":"",
+                             "commentcount":"",
+                             "postdate":"",
+                             "newssource":"",
+                             "newsauthor":"",
+                             "isHighlight":false,
+                             "m_text":"",
+                             "zone":"zone", "loaderSource": "SlideNewsView.qml"
+                         })
+        utility.consoleLog("刷新大海报")
+    }
+    
     function postOk(maxsid)
     {
-        //console.log("maxsid:"+maxsid+" "+maxnewsidData)
+        utility.consoleLog("最新新闻ID："+maxsid)
         if(maxsid>maxnewsidData)
         {
             if(maxsid-maxnewsidData>19)
@@ -56,7 +78,6 @@ Item {//
                 maxnewsidData=0
                 minnewsidData=99999999
                 listmodel.clear()
-                
                 xmlModel.beginPost("http://www.ithome.com/rss/news.xml",zone)//获取最新资讯
             }
             else{
@@ -66,7 +87,9 @@ Item {//
                 }
                 addonemodel.addone(0,"news")//一个一个的增加新闻
             }
-        }else loading=false
+        }else{
+            loading=false
+        }
     }
     function reModel(){
         if(loading) return
@@ -122,7 +145,7 @@ Item {//
             isOneStart=true
             maxnewsidData=0
             minnewsidData=99999999
-            var favoritePath=sysIsSymbian?"../../like.xml":"/home/user/.ithome/like.xml"
+            var favoritePath=sysIsSymbian?("D:/ithome/like.xml"):"/home/user/.ithome/like.xml"
             xmlModel.beginPost(favoritePath,zone)
         }
     }
@@ -176,11 +199,6 @@ Item {//
         }
     }
 
-    Component.onCompleted: {
-        addListViewCount=20
-        xmlModel.beginPost("http://www.ithome.com/rss/news.xml",zone)//如果有网络就加载新闻
-    }
-
     Image{
         id:pageheader
         visible: !sysIsSymbian_v3//如果是s60v3就隐藏
@@ -224,14 +242,16 @@ Item {//
     RankModel{
         id:rankmodel
     }
-    AddOneModel{
+    AddOneModel{//用了加载单个新闻
         id:addonemodel
         onClose: {
             loading=false//取消缓存圈圈的显示
+            if( zone=="news"|zone=="wp"|zone=="ios"|zone=="android" )
+                updataSlide()//刷新大海报
         }
     }
 
-    AddXmlModel{
+    AddXmlModel{//用了加载更多新闻
         id:addxmlmodel
         signal postClose
         onStatusChanged: {
@@ -243,12 +263,6 @@ Item {//
             else if(status==XmlListModel.Loading)
             {
                 loading=true
-                //console.log("addModel status:Loading,post url="+addxmlmodel.source)
-            }
-
-            else if(status==XmlListModel.Error)
-            {
-                console.log("xmlModel status:Error:"+addxmlmodel.errorString())
             }
         }
     }
@@ -271,7 +285,6 @@ Item {//
                 up.opacity=1
         }
         Keys.onPressed:mainlist.buttonPress(event.key)
-        
     }
     
     Image{
@@ -318,5 +331,10 @@ Item {//
         if(focus){
             listview.forceActiveFocus();//获得焦点
         }
+    }
+    
+    Component.onCompleted: {
+        addListViewCount=20
+        xmlModel.beginPost("http://www.ithome.com/rss/news.xml",zone)//如果有网络就加载新闻
     }
 }

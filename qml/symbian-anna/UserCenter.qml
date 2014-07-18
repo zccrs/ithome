@@ -42,7 +42,7 @@ MyPage{
                 if( user_true_name.mode == "show" ){
                     return main.night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
                 }else{
-                    return "toolbar-mediacontrol-play"//main.night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
+                    return main.night_mode?"qrc:/Image/save_symbian.svg":"qrc:/Image/save_inverse_symbian.svg"
                 }
             }
 
@@ -70,7 +70,7 @@ MyPage{
         ToolButton{
             id:quitLoginButton
             visible: user_center_main.mode == "个人中心"
-            iconSource: "toolbar-mediacontrol-stop"
+            iconSource: main.night_mode?"qrc:/Image/quitLogin_symbian.svg":"qrc:/Image/quitLogin_inverse_symbian.svg"
             opacity: main.night_mode?main.brilliance_control:1
             platformInverted: main.platformInverted
             onClicked: {

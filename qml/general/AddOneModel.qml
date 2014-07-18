@@ -41,7 +41,8 @@ AddXmlModel{
                              "newssource":addonemodel.get(0).newssource,
                              "newsauthor":addonemodel.get(0).newsauthor,
                              "isHighlight":false,
-                             "m_text":""
+                             "m_text":"",
+                             "loaderSource": "MyLiseComponent.qml"
                             })
             }else{
                 listmodel.insert(pos,{
