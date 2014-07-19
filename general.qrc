@@ -24,5 +24,11 @@
         <file>Image/save.svg</file>
         <file>Image/shade_symbian.svg</file>
         <file>Image/shade_inverse_symbian.svg</file>
+        <file>Image/quitLogin_inverse_symbian.svg</file>
+        <file>Image/quitLogin_symbian.svg</file>
+        <file>Image/save_inverse_symbian.svg</file>
+        <file>Image/save_symbian.svg</file>
+        <file>Image/userCenter_symbian.svg</file>
+        <file>Image/userCenter_symbian_inverse.svg</file>
     </qresource>
 </RCC>

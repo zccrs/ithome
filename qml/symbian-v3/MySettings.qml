@@ -4,17 +4,46 @@ import com.nokia.symbian 1.0
 import "../general"
 MyPage{
     id:setting
-
+    HttpRequest{
+        id: checkForUpdates_http
+        onPostFinish: {
+            var ver = JSON.parse( reData )
+            if( ver.error == 0 ){
+                if( ver.version != utility.ithomeVersion){
+                    utility.setClipboard( ver.url )
+                    showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
+                }else if(!settings.getValue( "auto_updata_app", false )){
+                    showBanner("已经是最新版本")
+                }
+            }
+        }
+    }
     MyMenu {
         id: mymenu
         MenuLayout {
             MenuItem {
-                text: "清理垃圾"
-                onClicked: deleteButton.clicked()
+                text: "个人中心"
+                onClicked: pageStack.push(Qt.resolvedUrl("UserCenter.qml"))
             }
+
             MenuItem {
                 text: "关于"
                 onClicked: aboutButton.clicked()
+            }
+            MenuItem {
+                text: "检测更新"
+                Component.onCompleted: {
+                    if( settings.getValue( "auto_updata_app", false ) )
+                        checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+                }
+    
+                onClicked: {
+                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+                }
+            }
+            MenuItem {
+                text: "清理垃圾"
+                onClicked: deleteButton.clicked()
             }
             Keys.onPressed: {
                 if(event.key == Qt.Key_Context1)
@@ -22,9 +51,11 @@ MyPage{
             }
         }
         onStatusChanged: {
-            //utility.consoleLog("SelectionDialog现在的状态是："+status+" "+DialogStatus.Closed)
-            if(status===DialogStatus.Closed&setting.status == PageStatus.Actives)
+            utility.consoleLog("设置现在的状态是："+setting.status+" "+PageStatus.Active)
+            if(status===DialogStatus.Closed&setting.status == PageStatus.Active){
                 setting.forceActiveFocus()
+                utility.consoleLog("设置获得了焦点")
+            }
         }
     }
 
@@ -87,9 +118,13 @@ MyPage{
         id:settingFlick
         anchors.fill: parent
         contentHeight: 600
+        
+        Behavior on contentY{
+            NumberAnimation{duration: 200}
+        }
         Text{
             id:text1
-            text:"版本：1.1.5"
+            text:"版本："+utility.ithomeVersion
             opacity: night_mode?brilliance_control:1
             color: main.night_mode?"#f0f0f0":"#282828"
             font.pixelSize: 16
@@ -149,11 +184,25 @@ MyPage{
                 settings.setValue("wifi_load_image",checked)
             }
             KeyNavigation.up: show_image_off_on
+            KeyNavigation.down: auto_updata_app
+        }
+        MySwitch{
+            id:auto_updata_app
+            checked: settings.getValue("auto_updata_app",false)
+            anchors.top: wifi_load_image.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            switch_text: "自动检测更新"
+            onIsPressed: {
+                settings.setValue("auto_updata_app",checked)
+            }
+            KeyNavigation.up: wifi_load_image
             KeyNavigation.down: fontSize
         }
         CuttingLine{
             id:cut_off
-            anchors.top: wifi_load_image.bottom
+            anchors.top: auto_updata_app.bottom
         }
         MySlider {
             id:fontSize
@@ -192,14 +241,14 @@ MyPage{
                 //console.log(settings.getValue("intensity_control",0.60))
             }
             KeyNavigation.up: fontSize
-            KeyNavigation.down: my_phone
+            KeyNavigation.down: signature_input
         }
 
         CuttingLine{
             id:cut_off2
             anchors.top: intensity_control.bottom
         }
-        Item{
+        /*Item{
             id:my_phone
             width: parent.width
             height: intensity_control.height
@@ -304,7 +353,7 @@ MyPage{
                     }
                 }
             }
-        }
+        }*/
 
 
 
@@ -322,15 +371,17 @@ MyPage{
         }
         TextField{
             id:signature_input
+            height: 30
+            font.pixelSize: 14
             //platformInverted: main.platformInverted
             placeholderText: settings.getValue("signature","点击输入小尾巴")
             anchors.left: my_signature.right
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: my_phone.bottom
+            anchors.top: cut_off2.bottom
             anchors.topMargin:20
-            KeyNavigation.up: my_phone
+            KeyNavigation.up: intensity_control
             KeyNavigation.down: night_mode_off_on
             onActiveFocusChanged: {
                 if(activeFocus)
@@ -338,10 +389,6 @@ MyPage{
                     settingFlick.contentY=Math.max(y-setting.height/2,0)
                 }
             }
-        }
-
-        Behavior on contentY{
-            NumberAnimation{duration: 200}
         }
 
         //onContentYChanged: console.log("setting page flick ContentY:"+settingFlick.contentY)
@@ -401,6 +448,7 @@ MyPage{
             break
         default:break;
         }
+        event.accepted = true
     }
     onActiveFocusChanged: {
         if(activeFocus)

@@ -1,15 +1,16 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.0
-import com.nokia.symbian 1.0
+import QtQuick 1.1
+import com.nokia.meego 1.1
 import "../general"
 Item{
     anchors.fill: parent
     Image{
         id: ithome_image
-        source: "qrc:/Image/ithome.svg"
+        source: "qrc:/Image/ithome_meego.png"
+        sourceSize.width: 110
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 20
     }
     TextField{
         id:input_email
@@ -67,6 +68,7 @@ Item{
     Image{
         id:code_image
         width: sourceSize.width
+        cache: false
         anchors.right: input_email.right
         anchors.verticalCenter: input_code.verticalCenter
         MouseArea{
@@ -78,11 +80,11 @@ Item{
         }
     }
 
-    MyButton{
+    Button{
         id: register_button
         enabled: input_email.text!=""&input_code.text!=""
         text: "注        册"
-        font.pixelSize: 18
+        font.pixelSize: 22
         anchors.top: input_code.bottom
         anchors.topMargin: 20
         

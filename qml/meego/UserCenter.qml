@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.0
-import com.nokia.symbian 1.0
+import QtQuick 1.1
+import com.nokia.meego 1.1
 import QtWebKit 1.0
 import "../general"
 MyPage{
@@ -8,11 +8,11 @@ MyPage{
     property real text_opacity: night_mode?brilliance_control:1
     property string mode: "个人中心"
     
-    tools: CustomToolBarLayout{
+    tools: ToolBarLayout{
         id:userCenterTool
-        ToolButton{
+        ToolIcon{
             id:backButton
-            iconSource: main.night_mode?"qrc:/Image/back2.svg":"qrc:/Image/back.svg"
+            iconId: "toolbar-back"
             opacity: main.night_mode?main.brilliance_control:1
             
             onClicked: {
@@ -35,12 +35,13 @@ MyPage{
                 }
             }
         }
-        ToolButton{
+        ToolIcon{
             id:editInfo
             visible: user_center_main.mode == "个人中心"
+            iconId: user_true_name.mode == "show"?"toolbar-edit":""
             iconSource: {
                 if( user_true_name.mode == "show" ){
-                    return main.night_mode?"qrc:/Image/edit2.svg":"qrc:/Image/edit.svg"
+                    return ""
                 }else{
                     return main.night_mode?"qrc:/Image/save_symbian.svg":"qrc:/Image/save_inverse_symbian.svg"
                 }
@@ -67,7 +68,7 @@ MyPage{
             }
         }
         
-        ToolButton{
+        ToolIcon{
             id:quitLoginButton
             visible: user_center_main.mode == "个人中心"
             iconSource: main.night_mode?"qrc:/Image/quitLogin_symbian.svg":"qrc:/Image/quitLogin_inverse_symbian.svg"
@@ -93,7 +94,7 @@ MyPage{
         source: "qrc:/Image/PageHeader.svg"
         Text{
             text:user_center_main.mode
-            font.pixelSize: 22
+            font.pixelSize:30
             color: "white"
             x:10
             anchors.verticalCenter: parent.verticalCenter
@@ -213,18 +214,19 @@ MyPage{
         id: user_center_page
         anchors.top: header.bottom
         width: parent.width
-        height: 494
+        height: 659
         
         Image{
             id:user_avatar
-            source: "../general/avatar.jpg"
+            cache: false
+            source: "/home/developer/.ithome/cache/avatar.jpg"
             anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 10
-            sourceSize.width:80
+            sourceSize.width:110
             Image {
-                source: main.night_mode?"qrc:/Image/shade_inverse_symbian.svg":"qrc:/Image/shade_symbian.svg"
+                source: main.night_mode?"qrc:/Image/shade_inverse_meego.png":"qrc:/Image/shade_meego.png"
                 anchors.fill: parent
                 smooth: true
             }
@@ -251,14 +253,15 @@ MyPage{
                 color: main.night_mode?"#f0f0f0":"#282828"
                 opacity: night_mode?brilliance_control:1
                 text: settings.getValue("UserNick","")
-                font.pixelSize: 26
+                font.pixelSize: 32
             }
             TextField{
                 id:user_nick_input
                 visible: user_nick.mode == "edit"
-                font.pixelSize: 18
+                font.pixelSize: 20
                 
-                anchors.fill: parent
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: user_nick_show.text
             }
         }
@@ -268,7 +271,7 @@ MyPage{
             color: main.night_mode?"#f0f0f0":"#000000"
             opacity: night_mode?brilliance_control:1
             text: "LV"+settings.getValue("UserLevel",0)
-            font.pixelSize: 20
+            font.pixelSize: 22
             anchors.left: user_nick.right
             anchors.leftMargin: 10
             anchors.bottom: user_nick.bottom
@@ -278,7 +281,7 @@ MyPage{
             color: main.night_mode?"#f0f0f0":"#282828"
             opacity: night_mode?brilliance_control:0.6
             text: settings.getValue("LevelState","")
-            font.pixelSize: 18
+            font.pixelSize: 22
             anchors.left: user_nick.left
             anchors.bottom: user_avatar.bottom
         }
@@ -287,7 +290,7 @@ MyPage{
             target: cacheContent
             onImageDownloadFinish:{
                 user_avatar.source=""
-                user_avatar.source = "../general/avatar.jpg"
+                user_avatar.source = "/home/developer/.ithome/cache/avatar.jpg"
             }
         }
         Text {
@@ -297,7 +300,7 @@ MyPage{
             anchors.left: user_avatar.left
             anchors.top: user_avatar.bottom
             anchors.topMargin: 10
-            font.pixelSize: 18
+            font.pixelSize: 22
             text: "账    号："+settings.getValue("AccountInfo","")
         }
         
@@ -336,6 +339,7 @@ MyPage{
         Text {
             text: "修改密码"
             font.underline: true
+            font.pixelSize: 26
             color: "blue"
             anchors.right: parent.right
             anchors.rightMargin: 10
@@ -357,7 +361,7 @@ MyPage{
          id: flipable_user_center
          anchors.top: header.bottom
          width: parent.width
-         height: 494
+         height: 659
          property bool flipped: false
          visible: user_center_main.mode == "个人中心"|user_center_main.mode == "修改密码"
          front: user_center_page

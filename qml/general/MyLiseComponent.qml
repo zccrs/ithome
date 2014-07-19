@@ -56,6 +56,7 @@ Rectangle {
         sourceSize.width:width
         sourceSize.height:height
         source:(no_show_image|isWifi&wifiStatus===-1)&!utility.imageIsShow("titleImage"+String(newsid))?"qrc:/Image/it.png":image
+        
         NumberAnimation on opacity{
             id:imageHide
             to:0
@@ -201,13 +202,20 @@ Rectangle {
             page.loadContent(contentData)
         }
     }
-    Keys.onPressed: {
-        if(event.key === Qt.Key_Select||event.key === Qt.Key_Enter||event.key === Qt.Key_Return){
-            if(!isHighlight)
-                mouse.clicked(0)
-            event.accepted = true
+    
+    onActiveFocusChanged: {
+        utility.consoleLog(index+"新闻条目的焦点="+activeFocus)
+    }
+    Connections{//接收按键信号
+        target: root.parent
+        onKeyPressed: {
+            if(keysid === Qt.Key_Select||keysid === Qt.Key_Enter||keysid === Qt.Key_Return){
+                if(!isHighlight)
+                    mouse.clicked(0)
+            }
         }
     }
+
     Component.onCompleted: {
         var string1="            <newsid>"+String(newsid)+"</newsid>\r\n"
         var string2="            <title>"+String(title)+"</title>\r\n"

@@ -21,20 +21,23 @@ MyPage{
                     signature_input.placeholderText=signature_input.text
                     signature_input.text=""
                 }
-                if(nickname_input.text!="")
-                {
-                    settings.setValue("name",nickname_input.text)
-                    nickname_input.placeholderText=nickname_input.text
-                    nickname_input.text=""
-                }
                 pageStack.pop()
                 if(loading)
                     main.busyIndicatorShow()//显示缓冲圈圈
             }
         }
         ToolIcon{
+            id: userCenter
+            opacity: night_mode?brilliance_control:1
+            iconSource: night_mode?"qrc:/Image/userCenter_meego.png" : "qrc:/Image/userCenter_symbian_inverse.svg"
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("UserCenter.qml"))
+            }
+        }
+        ToolIcon{
             id:deleteButton
             iconId: "toolbar-delete"
+            opacity: night_mode?brilliance_control:1
             Connections{
                 target: cacheContent
                 onRemoveResult:{
@@ -55,6 +58,7 @@ MyPage{
         }
         ToolIcon{
             id:aboutButton
+            opacity: night_mode?brilliance_control:1
             iconSource: night_mode?"qrc:/Image/about_meego.png":"qrc:/Image/about_inverse_meego.png"
             onClicked: {
                 current_page="about"
@@ -92,7 +96,7 @@ MyPage{
         }
         Text{
             id:text1
-            text:"版本：1.1.5"
+            text: "版本："+utility.ithomeVersion
             opacity: night_mode?brilliance_control:1
             color: main.night_mode?"#f0f0f0":"#282828"
             font.pixelSize: main.sysIsSymbian?20:22
@@ -170,9 +174,23 @@ MyPage{
             }
         }
         MySwitch{
+            id:auto_updata_app
+            checked: settings.getValue("auto_updata_app",false)
+            anchors.top: full_screen.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            switch_text: "自动检测更新"
+            onIsPressed: {
+                settings.setValue("auto_updata_app",checked)
+            }
+            KeyNavigation.up: full_screen
+            KeyNavigation.down: screen_orientation
+        }
+        MySwitch{
             id:screen_orientation
             checked: settings.getValue("screenOrientation",PageOrientation.LockPortrait)==0?true:false
-            anchors.top: full_screen.bottom
+            anchors.top: auto_updata_app.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
@@ -232,7 +250,7 @@ MyPage{
             id:cut_off2
             anchors.top: intensity_control.bottom
         }
-        Text{
+        /*Text{
             id:my_phone
             text:"我的设备"
             anchors.left: parent.left
@@ -304,7 +322,7 @@ MyPage{
                     }
                 }
             }
-        }
+        }*/
 
         Text{
             id:my_signature
@@ -324,12 +342,10 @@ MyPage{
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: my_phone.bottom
+            anchors.top: cut_off2.bottom
             anchors.topMargin:20
-            KeyNavigation.up: nickname_input
-            KeyNavigation.down: nickname_input
         }
-        Text{
+        /*Text{
             id:my_nickname
             text:"我的昵称"
             anchors.left: parent.left
@@ -350,12 +366,12 @@ MyPage{
             anchors.topMargin:20
             KeyNavigation.up: signature_input
             KeyNavigation.down: signature_input
-        }
+        }*/
 
         //onContentYChanged: console.log("setting page flick ContentY:"+settingFlick.contentY)
         CuttingLine{
             id:cut_off3
-            anchors.top: nickname_input.bottom
+            anchors.top: signature_input.bottom
         }
         Text{
             id:remove_cache
@@ -377,6 +393,39 @@ MyPage{
             text:Math.round(100*settings.getValue("cache_size",0)/(1024*1024))/100+"M"
             font.pixelSize: 26
             color: main.night_mode?"#f0f0f0":"#282828"
+        }
+        
+        HttpRequest{
+            id: checkForUpdates_http
+            onPostFinish: {
+                var ver = JSON.parse( reData )
+                if( ver.error == 0 ){
+                    if( ver.version != utility.ithomeVersion){
+                        utility.setClipboard( ver.url )
+                        showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
+                    }else if(!settings.getValue( "auto_updata_app", false )){
+                        showBanner("已经是最新版本")
+                    }
+                }
+            }
+        }
+
+        Button{
+            id: checkForUpdates_button
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cache.bottom
+            anchors.topMargin: 10
+            text: "检查更新"
+            width: parent.width*0.6
+            //height: width
+            Component.onCompleted: {
+                if( settings.getValue( "auto_updata_app", false ) )
+                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+            }
+
+            onClicked: {
+                checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+            }
         }
     }
     onStatusChanged: {

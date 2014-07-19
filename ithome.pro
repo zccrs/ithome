@@ -12,7 +12,7 @@ folder_02.source = qml/symbian-anna
 folder_02.target = qml
 folder_03.source = qml/general
 folder_03.target = qml
-folder_04.source = qml/symbian-v5#如果是s60v3就改成symbian-v3，是v5就是symbian-v5
+folder_04.source = qml/symbian-v3#如果是s60v3就改成symbian-v3，是v5就是symbian-v5
 folder_04.target = qml
 DEPLOYMENTFOLDERS = folder_03
 
@@ -21,7 +21,6 @@ DEPLOYMENTFOLDERS = folder_03
 simulator {
     DEPLOYMENTFOLDERS += folder_01 folder_02 folder_04
     RESOURCES += \
-        meego.qrc \
         symbian.qrc
 }
 
@@ -45,7 +44,7 @@ contains(MEEGO_EDITION, harmattan){
     export(iconsvg.path)
     INSTALLS += splash iconsvg
 
-    RESOURCES += meego.qrc
+    RESOURCES +=
 
 }
 
@@ -55,7 +54,7 @@ QML_IMPORT_PATH =
 
 symbian:{
     contains(S60_VERSION, 5.0){
-        DEFINES += Q_OS_S60V5#如果是s60v3就改成Q_OS_S60V3，是v5就是Q_OS_S60V5
+        DEFINES += Q_OS_S60V3#如果是s60v3就改成Q_OS_S60V3，是v5就是Q_OS_S60V5
         INCLUDEPATH += $$[QT_INSTALL_PREFIX]/epoc32/include/middleware
         INCLUDEPATH += $$[QT_INSTALL_PREFIX]/include/Qt
         DEPLOYMENTFOLDERS += folder_04
@@ -119,10 +118,25 @@ OTHER_FILES += \
     qml/symbian-v5/TitleAndTextField.qml \
     qml/symbian-v5/RetrievePassword.qml \
     qml/symbian-v5/RegisterAccount.qml \
-    qml/symbian-v5/LoginPage.qml
+    qml/symbian-v5/LoginPage.qml \
+    qml/symbian-v5/SetUserPassword.qml \
+    qml/meego/UserCenter.qml \
+    qml/meego/TitleAndTextField.qml \
+    qml/meego/SetUserPassword.qml \
+    qml/meego/RetrievePassword.qml \
+    qml/meego/RegisterAccount.qml \
+    qml/meego/LoginPage.qml \
+    qml/symbian-v3/UserCenter.qml \
+    qml/symbian-v3/TitleAndTextField.qml \
+    qml/symbian-v3/SetUserPassword.qml \
+    qml/symbian-v3/RetrievePassword.qml \
+    qml/symbian-v3/RegisterAccount.qml \
+    qml/symbian-v3/MyRadioButton.qml \
+    qml/symbian-v3/LoginPage.qml
 
 RESOURCES += \
-    general.qrc
+    general.qrc \
+    meego.qrc
 
 HEADERS += \
     #src/myimage.h \

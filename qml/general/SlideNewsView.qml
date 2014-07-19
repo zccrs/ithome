@@ -1,5 +1,5 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
+import QtQuick 1.0
 //import myXmlListModel 1.0
 import QtWebKit 1.0
 
@@ -79,7 +79,15 @@ Item{
                     }
                 }
             }
-            
+            Connections{//接收按键信号
+                target: slideNews_main.parent
+                onKeyPressed: {
+                    if(keysid === Qt.Key_Select||keysid === Qt.Key_Enter||keysid === Qt.Key_Return){
+                        if(!isHighlight)
+                            mouse_slide.clicked(0)
+                    }
+                }
+            }
             MouseArea{
                 id: mouse_slide
                 anchors.fill: parent
@@ -125,22 +133,24 @@ Item{
             Rectangle{
                 anchors.bottom: parent.bottom
                 width: parent.width
-                height: slide_text.height
+                height: slide_text.height+8
                 color: "white"
                 opacity: 0.6
                 clip: true
                 Text{
                     id: slide_text
+                    anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.right: parent.right
                     text: title
-                    font.pixelSize: 16
+                    font.pixelSize: sysIsSymbian_v3?10:16
                 }
                 Text{
+                    anchors.bottom: parent.bottom
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    font.pixelSize: 16
+                    font.pixelSize: sysIsSymbian_v3?10:16
                     text: (index+1)+"/"+get_slide_xml.count
                 }
             }
@@ -159,7 +169,7 @@ Item{
         state: "front"
         Timer{
             id: timer_flipable
-            interval: 20000
+            interval: 5000
             onTriggered: slide_flipable.flipableBegin()
             repeat: true
         }
@@ -177,7 +187,7 @@ Item{
             interval: 500
             property int number: 1//记录改翻转到第几个大海报
             onTriggered: {
-                console.log(number)
+                //console.log(number)
                 slide_list.positionViewAtIndex(number,ListView.Beginning)
                 number = (number+1)%get_slide_xml.count
             }

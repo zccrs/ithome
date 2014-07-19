@@ -2,21 +2,51 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.0
 import "../general"
-Item{
+MyPage{
+    id: register_account_main
     anchors.fill: parent
+    onActiveFocusChanged: {
+        utility.consoleLog("注册账号的焦点="+activeFocus)
+        if( activeFocus ){
+            input_email.forceActiveFocus()
+        }
+    }
+    MyMenu {
+        id: menu
+        MenuLayout {
+            MenuItem {
+                enabled: input_email.text!=""&input_code.text!=""
+                text: "注册"
+                onClicked: {
+                    utility.registerUserGeneral( "{email:\""+input_email.text+"\"}" )
+                }
+            }
+            Keys.onPressed: {
+                if(event.key == Qt.Key_Context1)
+                    menu.close()
+            }
+        }
+        onStatusChanged: {
+            if(status===DialogStatus.Closed)
+                input_email.forceActiveFocus()
+        }
+    }
+    
     Image{
         id: ithome_image
         source: "qrc:/Image/ithome.svg"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 10
+        sourceSize.width:60
     }
     TextField{
         id:input_email
         placeholderText: "邮箱地址"
         anchors.top: ithome_image.bottom
-        anchors.topMargin: 20
-        
+        anchors.topMargin: 10
+        font.pixelSize: 16
+        height: 30
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
         KeyNavigation.down: input_code
@@ -26,7 +56,8 @@ Item{
     TextField{
         id:input_code
         placeholderText: "验证码"
-        
+        font.pixelSize: 16
+        height: 30
         anchors.top: input_email.bottom
         anchors.topMargin: 10
         anchors.left: input_email.left
@@ -77,24 +108,22 @@ Item{
             }
         }
     }
-
-    MyButton{
-        id: register_button
-        enabled: input_email.text!=""&input_code.text!=""
-        text: "注        册"
-        font.pixelSize: 18
-        anchors.top: input_code.bottom
-        anchors.topMargin: 20
-        
-        width: parent.width*0.6
-        
-        anchors.horizontalCenter: parent.horizontalCenter
-        
-        onClicked: {
-            utility.registerUserGeneral( "{email:\""+input_email.text+"\"}" )
+    Keys.onPressed: {
+        switch(event.key)
+        {
+        case Qt.Key_Context1:
+            if( menu.status==DialogStatus.Open )
+                menu.close()
+            else
+                userCenter_backButton.clicked()
+            break
+        case Qt.Key_Context2:
+            menu.open()
+            break
+        default:break;
         }
+        event.accepted = true;
     }
-    
     onVisibleChanged: {
         if(visible)
             utility.getCode()//获取验证码

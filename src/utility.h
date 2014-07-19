@@ -21,7 +21,7 @@ class Utility : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString cacheImagePrefix READ cacheImagePrefix)//我的状态
-
+    Q_PROPERTY(QString ithomeVersion READ ithomeVersion)//我的状态
 public:
     // Not for qml
     explicit Utility(QObject *parent = 0);
@@ -43,6 +43,8 @@ private:
 
     QString m_cacheImagePrefix;
     QString cacheImagePrefix();
+    
+    QString ithomeVersion();
 private slots:
     void replyFinished(QNetworkReply* replys);//当post结束时调用
     void loginFinished(QNetworkReply* replys);//当登陆完成时调用

@@ -10,5 +10,9 @@
         <file>Image/to_up_meego.png</file>
         <file>Image/about_inverse_meego.png</file>
         <file>Image/about_meego.png</file>
+        <file>Image/ithome_meego.png</file>
+        <file>Image/userCenter_meego.png</file>
+        <file>Image/shade_inverse_meego.png</file>
+        <file>Image/shade_meego.png</file>
     </qresource>
 </RCC>

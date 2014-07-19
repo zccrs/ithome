@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.0
-import com.nokia.symbian 1.0
+import QtQuick 1.1
+import com.nokia.meego 1.1
 Item{
     id: login_mian
     width: parent.width
@@ -23,7 +23,7 @@ Item{
             to: "hide"
             reversible: true
             PropertyAnimation{
-                duration: 300
+                duration: 200
                 properties: "y"
                 
             }
@@ -59,10 +59,11 @@ Item{
         visible: user_center_main.mode == "登陆"
         Image{
             id: ithome_image
-            source: "qrc:/Image/ithome.svg"
+            source: "qrc:/Image/ithome_meego.png"
+            sourceSize.width: 110
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.topMargin: 20
         }
         
         TextField{
@@ -98,17 +99,17 @@ Item{
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 20
         
-            MyRadioButton{
+            RadioButton{
                 id: sava_password_radio
                 
                 text: "记住密码"
                 checked: settings.getValue( "SavePasswordChecked", false )
                 onCheckedChanged: {
+                    utility.consoleLog("radioButton Checked改变")
                     settings.setValue( "SavePasswordChecked", checked )
                 }
             }
-            MyRadioButton{
-                
+            RadioButton{
                 text: "显示密码"
                 checked: settings.getValue( "ShowPasswordChecked", false )
                 onCheckedChanged: {
@@ -121,11 +122,11 @@ Item{
             }
         }
     
-        MyButton{
+        Button{
             id: login_button
             enabled: input_email.text!=""&input_password.text!=""
             text: "登        陆"
-            font.pixelSize: 18
+            font.pixelSize: 22
             anchors.top: radio_row.bottom
             anchors.topMargin: 20
             
@@ -176,6 +177,7 @@ Item{
             Text {
                 text: "注册账号"
                 font.underline: true
+                font.pixelSize: 26
                 color: "blue"
                 MouseArea{
                     anchors.fill: parent
@@ -191,6 +193,7 @@ Item{
                 text: "找回密码"
                 font.underline: true
                 color: "blue"
+                font.pixelSize: 26
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {

@@ -82,7 +82,7 @@ Item{
             placeholderText: "密码"
             platformInverted: main.platformInverted
             anchors.top: input_email.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width*0.8
             KeyNavigation.down: input_email
@@ -127,7 +127,7 @@ Item{
             text: "登        陆"
             font.pixelSize: 18
             anchors.top: radio_row.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             
             width: parent.width*0.6
             platformInverted: main.platformInverted
@@ -249,6 +249,7 @@ Item{
     
     Component.onCompleted: {
         input_email.text = settings.getValue("UserEmail","")
-        input_password.text = settings.getValue("UserPassword","")
+        if( settings.getValue( "SavePasswordChecked", false ) )
+            input_password.text = settings.getValue("UserPassword","")
     }
 }

@@ -11,7 +11,9 @@ Item{
     signal isPressed
     Rectangle {
         id:rect
-        anchors.fill: parent
+        height: parent.height
+        width: main.width
+        anchors.horizontalCenter: parent.horizontalCenter
         color: night_mode? "#00ffee":"#00CCFF"
         opacity: 0
         radius: 10

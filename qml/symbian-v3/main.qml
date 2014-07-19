@@ -7,6 +7,8 @@ import "../general"
 PageStackWindow {
     id:main
     showToolBar: false
+    width: 240
+    height: 320
     platformSoftwareInputPanelEnabled :true
     property bool night_mode: settings.getValue("night_mode",false)//夜间模式
     property bool no_show_image: settings.getValue("show_image_off_on",false)//无图模式

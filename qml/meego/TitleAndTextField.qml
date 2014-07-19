@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.symbian 1.1
+import com.nokia.meego 1.1
 
 Item {
     height: input.height
@@ -8,7 +8,7 @@ Item {
     property string title: ""
     property alias content: input.text
     property string mode:"show"
-    property int fontSize: 18
+    property int fontSize: 22
     
     function modeSwitch()
     {
@@ -43,7 +43,6 @@ Item {
         id:input
         visible: mode == "edit"
         font.pixelSize: fontSize
-        platformInverted: main.platformInverted
         anchors.left: text.right
         anchors.leftMargin: 10
         anchors.right: parent.right

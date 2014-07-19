@@ -1,22 +1,23 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.symbian 1.1
+import com.nokia.meego 1.1
 
 Item{
     anchors.fill: parent
     Image{
         id: ithome_image
-        source: "qrc:/Image/ithome.svg"
+        source: "qrc:/Image/ithome_meego.png"
+        sourceSize.width: 110
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 20
     }
     TextField{
         id:input_oldpassword
         placeholderText: "旧密码"
         anchors.top: ithome_image.bottom
         anchors.topMargin: 20
-        platformInverted: main.platformInverted
+        
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
         KeyNavigation.down: input_newpassword
@@ -28,7 +29,7 @@ Item{
         placeholderText: "新密码"
         anchors.top: input_oldpassword.bottom
         anchors.topMargin: 10
-        platformInverted: main.platformInverted
+        
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
         KeyNavigation.down: input_re_newpassword
@@ -40,7 +41,7 @@ Item{
         placeholderText: "重复新密码"
         anchors.top: input_newpassword.bottom
         anchors.topMargin: 10
-        platformInverted: main.platformInverted
+        
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
         KeyNavigation.down: input_oldpassword
@@ -51,12 +52,12 @@ Item{
         id: register_button
         enabled: input_oldpassword.text!=""&input_newpassword.text!=""&input_re_newpassword.text!=""
         text: "确        认"
-        font.pixelSize: 18
+        font.pixelSize: 22
         anchors.top: input_re_newpassword.bottom
         anchors.topMargin: 20
         
         width: parent.width*0.6
-        platformInverted: main.platformInverted
+        
         anchors.horizontalCenter: parent.horizontalCenter
         
         onClicked: {

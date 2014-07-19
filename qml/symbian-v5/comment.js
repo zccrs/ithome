@@ -1,9 +1,8 @@
-﻿
-function CloseReplay(commentid) {
+﻿function CloseReplay(commentid) {
         var ReplyDiv = document.getElementById('Reply' + commentid);
         ReplyDiv.style.display = 'none';
 }
-function ShowReplay(commentid,newsid)
+function ShowReplay(commentid,newsid,lou)
 {
     var obj
     obj=document.getElementById("against" + commentid).parentNode.parentNode.parentNode.firstChild.firstChild
@@ -33,9 +32,9 @@ function commentFinish(msg, commentid)
                             if( Number(commentid)!=0 ){
                                 //$("#lou" + commentid).append('   <li class="gh"><div class="re_info"><strong class="p_floor"></strong>新回复</div><div class="re_comm"><p class="p_1">' + $("#commentContent" + commentid).val() + '</p><p class="p_2"><span class="comm_reply"><a  href="javascript:;">支持(0)</a><span class="v">|</span><a id="against877904" href="javascript:;">反对(0)</a><span class="v">|</span><a href="javascript:;">回复</a></span></p></li>');
                                 
-                                var html=document.getElementById("#lou"+commentid).innerHTML
-                                document.getElementById("#lou"+commentid).innerHTML=html+unescape(post.responseText);
-                                document.getElementById("#lou"+commentid).style.display="block"
+                                var html=document.getElementById("lou"+commentid).innerHTML
+                                document.getElementById("lou"+commentid).innerHTML=html+unescape(post.responseText);
+                                document.getElementById("lou"+commentid).style.display="block"
                             }else{
                                 html=document.getElementById("LoadArticleReply").innerHTML
                                 document.getElementById("LoadArticleReply").innerHTML=html+unescape(post.responseText);
@@ -117,20 +116,20 @@ function reData(commentid,typeid,count)
         obj.innerHTML='支持(' + count + ')';
         obj.setAttribute("href","");
 
-        //obj.style.position = "relative";
-        //obj.insertAdjacentHTML("afterEnd","<span class='flower'></span>");
-        //obj.firstChild.style.position="absolute"
-        //obj.firstChild.style.textAlign="center"
-        //obj.firstChild.style.left="6px"
-        //obj.firstChild.style.top="-10px"
-        //obj.firstChild.style.display="block"
-        //obj.firstChild.style.width="30px"
-        //obj.firstChild.style.height="30px"
-        //obj.firstChild.style.background="url(http://file.ithome.com/images/agree.gif)"
-        //obj.firstChild.style.opacity="0"
+        obj.style.position = "relative";
+        obj.insertAdjacentHTML("afterEnd","<span class='flower'></span>");
+        obj.firstChild.style.position="absolute"
+        obj.firstChild.style.textAlign="center"
+        obj.firstChild.style.left="6px"
+        obj.firstChild.style.top="-10px"
+        obj.firstChild.style.display="block"
+        obj.firstChild.style.width="30px"
+        obj.firstChild.style.height="30px"
+        obj.firstChild.style.background="url(http://file.ithome.com/images/agree.gif)"
+        obj.firstChild.style.opacity="0"
 
-        //obj.firstChild.css({ "position": "absolute", "text-align": "center", "left": "6px", "top": "-10px", "display": "block", "width": "30px", "height": "30px", "background": "url(http://file.ithome.com/images/agree.gif) left center no-repeat", "opacity": "0" }).animate({ top: '-30px', opacity: '1' }, 300, function () { $(this).delay(300).animate({ top: '-35px', opacity: '0' }, 300) });
-        //$("#agree" + commentid).find(".flower").removeClass();
+        obj.firstChild.css({ "position": "absolute", "text-align": "center", "left": "6px", "top": "-10px", "display": "block", "width": "30px", "height": "30px", "background": "url(http://file.ithome.com/images/agree.gif) left center no-repeat", "opacity": "0" }).animate({ top: '-30px', opacity: '1' }, 300, function () { $(this).delay(300).animate({ top: '-35px', opacity: '0' }, 300) });
+        document.getElementById("agree" + commentid).find(".flower").removeClass();
         //setTimeout('obj.removeChild(obj.firstChild)',"2000");
     }
     else {
@@ -224,8 +223,9 @@ function displayCommentLouMore(commentid)//加载更多楼中楼评论
             {
                 if(post.readyState===4){
                     if(post.status===200){
-                        document.getElementById("#lou" + commentid).innerHTML+=post.responseText
-                        document.getElementById("#liGetMore" + commentid).style.display="none";
+                        //alert(document.getElementById("lou" + commentid).innerHTML)
+                        document.getElementById("lou" + commentid).innerHTML += unescape(post.responseText)
+                        document.getElementById("liGetMore" + commentid).style.display="none";
                     }
                 }
             }

@@ -89,7 +89,7 @@ MyPage{
         width: parent.width
         clip: true
         focus:true
-        contentHeight: logo.height+text1.height+700
+        contentHeight: logo.height+text1.height+checkForUpdates_button.height+700
 
 
         Image{
@@ -101,7 +101,7 @@ MyPage{
         }
         Text{
             id:text1
-            text:"版本：1.1.5"
+            text:"版本："+utility.ithomeVersion
             opacity: night_mode?brilliance_control:1
             color: main.night_mode?"#f0f0f0":"#282828"
             font.pixelSize: main.sysIsSymbian?20:22
@@ -170,10 +170,26 @@ MyPage{
                 settings.setValue("full_screen",checked)
             }
         }
+        
+        MySwitch{
+            id:auto_updata_app
+            checked: settings.getValue("auto_updata_app",false)
+            anchors.top: full_screen.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            switch_text: "自动检测更新"
+            onIsPressed: {
+                settings.setValue("auto_updata_app",checked)
+            }
+            KeyNavigation.up: full_screen
+            KeyNavigation.down: screen_orientation
+        }
+        
         MySwitch{
             id:screen_orientation
             checked: settings.getValue("screenOrientation",PageOrientation.LockPortrait)==0?true:false
-            anchors.top: full_screen.bottom
+            anchors.top: auto_updata_app.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
@@ -395,6 +411,39 @@ MyPage{
             text:Math.round(100*settings.getValue("cache_size",0)/(1024*1024))/100+"M"
             font.pixelSize: 22
             color: main.night_mode?"#f0f0f0":"#282828"
+        }
+        
+        HttpRequest{
+            id: checkForUpdates_http
+            onPostFinish: {
+                var ver = JSON.parse( reData )
+                if( ver.error == 0 ){
+                    if( ver.version != utility.ithomeVersion){
+                        utility.setClipboard( ver.url )
+                        showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
+                    }else if(!settings.getValue( "auto_updata_app", false )){
+                        showBanner("已经是最新版本")
+                    }
+                }
+            }
+        }
+
+        MyButton{
+            id: checkForUpdates_button
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cache.bottom
+            anchors.topMargin: 10
+            text: "检查更新"
+            //height : width
+            width: parent.width*0.6
+            Component.onCompleted: {
+                if( settings.getValue( "auto_updata_app", false ) )
+                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+            }
+
+            onClicked: {
+                checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+            }
         }
     }
     onStatusChanged: {

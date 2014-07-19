@@ -2,16 +2,73 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.0
 Item{
-    id: login_mian
-    width: parent.width
+    id: login_main
     signal loginOK
     state: "hide"
+    property alias menu: menu
+    width: parent.width
+    height: parent.height
+    
+    onStateChanged: {
+        if( state=="show" ){
+            input_email.forceActiveFocus()
+        }
+    }
+    onActiveFocusChanged: {
+        utility.consoleLog("登陆界面的焦点="+activeFocus)
+        if( activeFocus )
+            input_email.forceActiveFocus()
+    }
+    
+    MyMenu {
+        id: menu
+        MenuLayout {
+            MenuItem {
+                text: "登陆"
+                enabled: input_email.text!=""&input_password.text!=""
+                onClicked: {
+                    if( sava_password_radio.checked )
+                        settings.setValue( "UserPassword", input_password.text )
+                    else
+                        settings.setValue( "UserPassword", "" )
+                    settings.setValue( "UserEmail", input_email.text )
+                    utility.login( input_email.text, input_password.text )
+                }
+            }
 
+            MenuItem {
+                text: "注册账号"
+                onClicked: {
+                    user_center_main.mode = "注册账号"
+                    flipable.state = "back"
+                    register_account_page.forceActiveFocus()
+                }
+            }
+            MenuItem {
+                text: "找回密码"
+                onClicked: {
+                    user_center_main.mode = "找回密码"
+                    flipable.state = "back"
+                    retrieve_password_page.forceActiveFocus()
+                }
+            }
+            Keys.onPressed: {
+                if(event.key == Qt.Key_Context1)
+                    menu.close()
+            }
+        }
+        onStatusChanged: {
+            if(status===DialogStatus.Closed)
+                if(user_center_main.mode=="登陆")
+                    input_email.forceActiveFocus()
+        }
+    }
+    
     Connections{
         target: user_center_main
         onModeChanged:{
             if( user_center_main.mode=="登陆" ){
-                user_login.state = "show"
+                login_main.state = "show"
                 flipable.state = "front"
             }
         }
@@ -38,16 +95,16 @@ Item{
         State {
             name: "show"
             PropertyChanges {
-                target: login_mian
-                y: header.height
+                target: login_main
+                y: 0
                 opacity: 1
             }
         },
         State {
             name: "hide"
             PropertyChanges {
-                target: login_mian
-                y:main.height
+                target: login_main
+                y:360
                 opacity: 0
             }
         }
@@ -60,6 +117,7 @@ Item{
         Image{
             id: ithome_image
             source: "qrc:/Image/ithome.svg"
+            sourceSize.width: 60
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 10
@@ -69,8 +127,9 @@ Item{
             id:input_email
             placeholderText: "邮箱地址"
             anchors.top: ithome_image.bottom
-            anchors.topMargin: 20
-            
+            anchors.topMargin: 10
+            font.pixelSize: 16
+            height: 30
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width*0.8
             KeyNavigation.down: input_password
@@ -80,14 +139,15 @@ Item{
         TextField{
             id:input_password
             placeholderText: "密码"
-            
+            font.pixelSize: 16
+            height: 30
             anchors.top: input_email.bottom
             anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width*0.8
-            KeyNavigation.down: input_email
+            KeyNavigation.down: sava_password_radio
             KeyNavigation.up:input_email
-            KeyNavigation.tab: input_email
+            KeyNavigation.tab: sava_password_radio
             echoMode: TextInput.Password
         }
         
@@ -106,10 +166,14 @@ Item{
                 onCheckedChanged: {
                     settings.setValue( "SavePasswordChecked", checked )
                 }
+                KeyNavigation.down: show_password_radio
+                KeyNavigation.up:input_password
+                KeyNavigation.tab: show_password_radio
             }
             MyRadioButton{
-                
+                id: show_password_radio
                 text: "显示密码"
+                
                 checked: settings.getValue( "ShowPasswordChecked", false )
                 onCheckedChanged: {
                     settings.setValue( "ShowPasswordChecked", checked )
@@ -118,30 +182,12 @@ Item{
                     else
                         input_password.echoMode = TextInput.Password
                 }
+                KeyNavigation.down: input_email
+                KeyNavigation.up:sava_password_radio
+                KeyNavigation.tab: input_email
             }
         }
     
-        MyButton{
-            id: login_button
-            enabled: input_email.text!=""&input_password.text!=""
-            text: "登        陆"
-            font.pixelSize: 18
-            anchors.top: radio_row.bottom
-            anchors.topMargin: 20
-            
-            width: parent.width*0.6
-            
-            anchors.horizontalCenter: parent.horizontalCenter
-            
-            onClicked: {
-                if( sava_password_radio.checked )
-                    settings.setValue( "UserPassword", input_password.text )
-                else
-                    settings.setValue( "UserPassword", "" )
-                settings.setValue( "UserEmail", input_email.text )
-                utility.login( input_email.text, input_password.text )
-            }
-        }
         Timer{
             id: emit_signal
             interval: 300
@@ -161,45 +207,10 @@ Item{
                     console.log( "userCookie:"+userCookie )
                     settings.setValue("userCookie", userCookie)
                     showBanner("登陆成功")
-                    login_mian.state = "hide"
+                    login_main.state = "hide"
                     emit_signal.start()
                 }else
                     showBanner("登陆失败")
-            }
-        }
-        Column{
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            spacing: 10
-            Text {
-                text: "注册账号"
-                font.underline: true
-                color: "blue"
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked: {
-                        user_center_main.mode = parent.text
-                        flipable.state = "back"
-                    }
-                    onPressed: parent.color = "red"
-                    onReleased: parent.color = "blue"
-                }
-            }
-            Text {
-                text: "找回密码"
-                font.underline: true
-                color: "blue"
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked: {
-                        user_center_main.mode = parent.text
-                        flipable.state = "back"
-                    }
-                    onPressed: parent.color = "red"
-                    onReleased: parent.color = "blue"
-                }
             }
         }
     }
@@ -207,8 +218,7 @@ Item{
     Flipable {
          id: flipable
          anchors.fill: parent
-         property bool flipped: false
-    
+         
          front: login_page
          state:"front"
          
@@ -246,7 +256,20 @@ Item{
              NumberAnimation { target: rotation; property: "angle"; duration: 300 }
          }
     }
-    
+    Keys.onPressed: {
+        utility.consoleLog("登陆中按下了按键")
+        switch(event.key)
+        {
+        case Qt.Key_Context1:
+            userCenter_backButton.clicked()
+            break
+        case Qt.Key_Context2:
+            menu.open()
+            break
+        default:break;
+        }
+        event.accepted = true;
+    }
     Component.onCompleted: {
         input_email.text = settings.getValue("UserEmail","")
         if( settings.getValue( "SavePasswordChecked", false ) )

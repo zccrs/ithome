@@ -31,12 +31,8 @@
         <file>Image/slider-1.png</file>
         <file>Image/slider-2.png</file>
         <file>Image/slider-3.png</file>
-        <file>Image/userCenter_symbian.svg</file>
-        <file>Image/userCenter_symbian_inverse.svg</file>
         <file>Image/ithome.svg</file>
-        <file>Image/quitLogin_inverse_symbian.svg</file>
-        <file>Image/quitLogin_symbian.svg</file>
-        <file>Image/save_inverse_symbian.svg</file>
-        <file>Image/save_symbian.svg</file>
+        <file>Image/button_white_symbian.png</file>
+        <file>Image/radioButton_white_symbian.png</file>
     </qresource>
 </RCC>

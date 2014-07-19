@@ -4,7 +4,7 @@ import QtQuick 1.0
 ListView {
     id:listview
     interactive: allowMouse
-    cacheBuffer: 0
+    keyNavigationWraps :true
     highlightMoveDuration: 300
     height: parent.height-y
     clip: sysIsSymbian_v3?false:true//必须开启，不然夜间模式的时候因为状态栏有透明度会将其显示出来
@@ -13,6 +13,10 @@ ListView {
         Loader{
             width: parent.width
             source: loaderSource
+            signal keyPressed( int keysid )
+            Keys.onPressed:{
+                keyPressed(event.key)
+            }
         }
     }
     maximumFlickVelocity: 2800
@@ -88,4 +92,8 @@ ListView {
         }
     }
     onAtYBeginningChanged: loadSwitch=!loadSwitch
+    
+    onActiveFocusChanged: {
+        utility.consoleLog("新闻列表的焦点+"+activeFocus)
+    }
  }

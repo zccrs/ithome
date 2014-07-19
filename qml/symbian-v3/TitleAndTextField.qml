@@ -1,14 +1,14 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
-import com.nokia.symbian 1.1
+import QtQuick 1.0
+import com.nokia.symbian 1.0
 
 Item {
     height: input.height
     width: parent.width
     property string title: ""
-    property alias content: input.text
+    property string content: ""
     property string mode:"show"
-    property int fontSize: 18
+    property int fontSize: 16
     
     function modeSwitch()
     {
@@ -41,12 +41,18 @@ Item {
     }
     TextField{
         id:input
+        text: content
+        height: 30
         visible: mode == "edit"
         font.pixelSize: fontSize
-        platformInverted: main.platformInverted
         anchors.left: text.right
         anchors.leftMargin: 10
         anchors.right: parent.right
         anchors.rightMargin: 10
+    }
+    
+    onActiveFocusChanged: {
+        if(activeFocus)
+            input.forceActiveFocus()
     }
 }

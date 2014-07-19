@@ -31,6 +31,7 @@ MyPage {
             }
         }
         ToolButton{
+            id: downButton
             //platformInverted: main.platformInverted
             opacity: night_mode?brilliance_control:1
             iconSource: night_mode?"qrc:/Image/to_down_symbian.svg":"qrc:/Image/to_down_inverse_symbian.svg"
@@ -93,7 +94,6 @@ MyPage {
                 //如果屏幕方向变了
             }
             
-
             function commentFinish(msg)//回复评论成功之后
             {
                 evaluateJavaScript('commentFinish('+'\''+msg+'\''+','+'\''+comment.parentCommentID+'\''+')')
@@ -130,7 +130,8 @@ MyPage {
                 }
             }
             onLoadFinished: {
-                
+                utility.consoleLog( "加载评论成功" )
+                web.evaluateJavaScript("initHtml()")//初始化html
             }
             onAlert: {
                 utility.consoleLog(message)

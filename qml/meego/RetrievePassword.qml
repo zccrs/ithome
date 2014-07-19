@@ -1,15 +1,16 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.0
-import com.nokia.symbian 1.0
+import QtQuick 1.1
+import com.nokia.meego 1.1
 Item{
     anchors.fill: parent
 
     Image{
         id: ithome_image
-        source: "qrc:/Image/ithome.svg"
+        source: "qrc:/Image/ithome_meego.png"
+        sourceSize.width: 110
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 20
     }
     TextField{
         id:input_email
@@ -44,6 +45,7 @@ Item{
     Image{
         id:code_image
         width: sourceSize.width
+        cache: false
         anchors.right: input_email.right
         anchors.verticalCenter: input_code.verticalCenter
         MouseArea{
@@ -58,7 +60,7 @@ Item{
         id:input_email_code
         placeholderText: "邮箱验证码"
         anchors.top: input_code.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
@@ -70,7 +72,7 @@ Item{
         id:input_newPassword
         placeholderText: "新密码"
         anchors.top: input_email_code.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
@@ -82,7 +84,7 @@ Item{
         id:input_rePassword
         placeholderText: "确认密码"
         anchors.top: input_newPassword.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
@@ -90,11 +92,11 @@ Item{
         KeyNavigation.up: input_newPassword
         KeyNavigation.tab: input_code
     }
-    MyButton{
+    Button{
         id: register_button
         enabled: input_email.text!=""&input_code.text!=""&input_email_code.text!=""&input_newPassword.text!=""&input_rePassword.text!=""
         text: "确        认"
-        font.pixelSize: 18
+        font.pixelSize: 22
         anchors.top: input_rePassword.bottom
         anchors.topMargin: 20
         

@@ -19,16 +19,16 @@ Item{
         platformInverted: main.platformInverted
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
-        KeyNavigation.down: input_password
-        KeyNavigation.up: input_password
-        KeyNavigation.tab: input_password
+        KeyNavigation.down: input_code
+        KeyNavigation.up: input_code
+        KeyNavigation.tab: input_code
     }
     TextField{
         id:input_code
         placeholderText: "验证码"
         platformInverted: main.platformInverted
         anchors.top: input_email.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         anchors.left: input_email.left
         anchors.right: code_image.left
         anchors.rightMargin: 10
@@ -85,7 +85,7 @@ Item{
         text: "注        册"
         font.pixelSize: 18
         anchors.top: input_code.bottom
-        anchors.topMargin: 10
+        anchors.topMargin: 20
         
         width: parent.width*0.6
         platformInverted: main.platformInverted

@@ -53,6 +53,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     
     QWebSettings::globalSettings ()->setAttribute (QWebSettings::LocalContentCanAccessRemoteUrls,true);
     QWebSettings::globalSettings ()->setAttribute (QWebSettings::SpatialNavigationEnabled,true);
+    QWebSettings::globalSettings ()->setAttribute (QWebSettings::SpatialNavigationEnabled, true);
 #if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
 #if defined(Q_OS_S60V5)//判断qt的版本
     viewer.setMainQmlFile(QLatin1String("qml/symbian-v5/main.qml"));
@@ -88,6 +89,5 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.setMainQmlFile(QLatin1String("qml/symbian-v5/main.qml"));
     viewer.show();
 #endif
-
     return app->exec();
 }

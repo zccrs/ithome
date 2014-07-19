@@ -33,7 +33,7 @@ Item{
         placeholderText: "验证码"
         platformInverted: main.platformInverted
         anchors.top: input_email.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         anchors.left: input_email.left
         anchors.right: code_image.left
         anchors.rightMargin: 10
@@ -59,7 +59,7 @@ Item{
         id:input_email_code
         placeholderText: "邮箱验证码"
         anchors.top: input_code.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         platformInverted: main.platformInverted
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
@@ -71,7 +71,7 @@ Item{
         id:input_newPassword
         placeholderText: "新密码"
         anchors.top: input_email_code.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         platformInverted: main.platformInverted
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
@@ -83,7 +83,7 @@ Item{
         id:input_rePassword
         placeholderText: "确认密码"
         anchors.top: input_newPassword.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: 10
         platformInverted: main.platformInverted
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
@@ -97,7 +97,7 @@ Item{
         text: "确        认"
         font.pixelSize: 18
         anchors.top: input_rePassword.bottom
-        anchors.topMargin: 10
+        anchors.topMargin: 20
         
         width: parent.width*0.6
         platformInverted: main.platformInverted

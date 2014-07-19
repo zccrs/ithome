@@ -38,6 +38,11 @@ QString Utility::cacheImagePrefix()
     return m_cacheImagePrefix;
 }
 
+QString Utility::ithomeVersion()
+{
+    return QApplication::applicationVersion ();
+}
+
 bool Utility::imageIsShow(const QString name)
 {
     if(imageShowing.indexOf(name)!=-1)
