@@ -99,7 +99,7 @@ Item{
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 20
         
-            RadioButton{
+            CheckBox{
                 id: sava_password_radio
                 
                 text: "记住密码"
@@ -109,7 +109,7 @@ Item{
                     settings.setValue( "SavePasswordChecked", checked )
                 }
             }
-            RadioButton{
+            CheckBox{
                 text: "显示密码"
                 checked: settings.getValue( "ShowPasswordChecked", false )
                 onCheckedChanged: {

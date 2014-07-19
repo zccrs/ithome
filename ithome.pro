@@ -132,7 +132,8 @@ OTHER_FILES += \
     qml/symbian-v3/RetrievePassword.qml \
     qml/symbian-v3/RegisterAccount.qml \
     qml/symbian-v3/MyRadioButton.qml \
-    qml/symbian-v3/LoginPage.qml
+    qml/symbian-v3/LoginPage.qml \
+    qml/meego/UIConstants.js
 
 RESOURCES += \
     general.qrc \
