@@ -35,7 +35,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     //int height=QApplication::desktop()->height();
     app->setApplicationName (QString::fromUtf8("IT之家"));
     app->setOrganizationName ("Stars");
-    app->setApplicationVersion ("1.1.5");
+    app->setApplicationVersion ("1.1.");
     Settings *setting=new Settings;
     Utility *unility=new Utility;
     Cache *cacheContent=new Cache(setting);
