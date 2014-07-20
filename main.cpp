@@ -35,7 +35,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     //int height=QApplication::desktop()->height();
     app->setApplicationName (QString::fromUtf8("IT之家"));
     app->setOrganizationName ("Stars");
-    app->setApplicationVersion ("1.1.");
+    app->setApplicationVersion ("1.1.5");
     Settings *setting=new Settings;
     Utility *unility=new Utility;
     Cache *cacheContent=new Cache(setting);
@@ -85,9 +85,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     else
         unility->setCss("/opt/ithome/qml/meego/theme_white.css",460);
     viewer.showExpanded();
-#else
-    viewer.setMainQmlFile(QLatin1String("qml/symbian-v5/main.qml"));
-    viewer.show();
 #endif
     return app->exec();
 }

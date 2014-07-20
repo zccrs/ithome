@@ -12,9 +12,9 @@ MyPage{
                 if( ver.version != utility.ithomeVersion){
                     utility.setClipboard( ver.url )
                     showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
-                }else if(!settings.getValue( "auto_updata_app", false )){
+                }else if(!=settings.getValue( "auto_updata_app", 0 )==0){
                     showBanner("已经是最新版本")
-                }else if(!settings.getValue( "auto_updata_app", false )){
+                }else if(!settings.getValue( "auto_updata_app", 0 )==0){
                     showBanner("未知错误，请重试")
                 }
             }
@@ -35,7 +35,7 @@ MyPage{
             MenuItem {
                 text: "检测更新"
                 Component.onCompleted: {
-                    if( settings.getValue( "auto_updata_app", false ) )
+                    if( settings.getValue( "auto_updata_app", 0 )==1 )
                         checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
                 }
     
@@ -190,14 +190,14 @@ MyPage{
         }
         MySwitch{
             id:auto_updata_app
-            checked: settings.getValue("auto_updata_app",false)
+            checked: settings.getValue("auto_updata_app",0)==1
             anchors.top: wifi_load_image.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
             switch_text: "自动检测更新"
             onIsPressed: {
-                settings.setValue("auto_updata_app",checked)
+                settings.setValue("auto_updata_app",checked?1:0)
             }
             KeyNavigation.up: wifi_load_image
             KeyNavigation.down: fontSize
