@@ -14,6 +14,8 @@ MyPage{
                     showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
                 }else if(!settings.getValue( "auto_updata_app", false )){
                     showBanner("已经是最新版本")
+                }else if(!settings.getValue( "auto_updata_app", false )){
+                    showBanner("未知错误，请重试")
                 }
             }
         }

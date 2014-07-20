@@ -107,7 +107,9 @@ MyPage{
     }
     Flickable{
         id:flick1
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height-(comment.isMeShow?comment.height:0)
+
         maximumFlickVelocity: 3000
         pressDelay:50
         interactive: page.allowMouse

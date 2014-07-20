@@ -14,5 +14,10 @@
         <file>Image/userCenter_meego.png</file>
         <file>Image/shade_inverse_meego.png</file>
         <file>Image/shade_meego.png</file>
+        <file>Image/userCenter_meego_inverse.png</file>
+        <file>Image/quitLogin_inverse_meego.png</file>
+        <file>Image/quitLogin_meego.png</file>
+        <file>Image/save_inverse_meego.png</file>
+        <file>Image/save_meego.png</file>
     </qresource>
 </RCC>

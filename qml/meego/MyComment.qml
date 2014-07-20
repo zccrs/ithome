@@ -65,7 +65,7 @@ Item{
             loading=true
             var url="http://www.ithome.com/ithome/postComment.aspx"
             var data="newsid="+mysid+"&commentNick="+settings.getValue("name","匿名")+"&commentContent="+contentField.text+settings.getValue("signature","----我的小尾巴")
-            var other="&parentCommentID="+parentCommentID+"&type=comment&client="+settings.getValue("client","1")+"&device="+settings.getValue("device","RM-821")
+            var other="&parentCommentID="+parentCommentID+"&type=comment"//&client="+settings.getValue("client","1")+"&device="+settings.getValue("device","RM-821")
             utility.postHttp(url,data+other,settings.getValue("userCookie","ASP.NET_SessionId=000000000000000000000000"))
         }
     }
@@ -166,6 +166,10 @@ Item{
     }
     TextArea{
         id:contentField
+        onImplicitHeightChanged: {
+            contentField.height = Math.max(52, implicitHeight)
+        }
+
         placeholderText: "请输入评论内容"
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: message_send.left

@@ -43,7 +43,7 @@ MyPage{
                 if( user_true_name.mode == "show" ){
                     return ""
                 }else{
-                    return main.night_mode?"qrc:/Image/save_symbian.svg":"qrc:/Image/save_inverse_symbian.svg"
+                    return main.night_mode?"qrc:/Image/save_meego.png":"qrc:/Image/save_inverse_meego.png"
                 }
             }
 
@@ -71,7 +71,7 @@ MyPage{
         ToolIcon{
             id:quitLoginButton
             visible: user_center_main.mode == "个人中心"
-            iconSource: main.night_mode?"qrc:/Image/quitLogin_symbian.svg":"qrc:/Image/quitLogin_inverse_symbian.svg"
+            iconSource: main.night_mode?"qrc:/Image/quitLogin_meego.png":"qrc:/Image/quitLogin_inverse_meego.png"
             opacity: main.night_mode?main.brilliance_control:1
             
             onClicked: {
@@ -89,6 +89,7 @@ MyPage{
     
     Image{
         id:header
+        z:1
         opacity: text_opacity
         width: parent.width
         source: "qrc:/Image/PageHeader.svg"

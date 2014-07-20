@@ -133,25 +133,25 @@ Item{
             Rectangle{
                 anchors.bottom: parent.bottom
                 width: parent.width
-                height: slide_text.height+8
+                height: 30
                 color: "white"
-                opacity: 0.6
+                opacity: 0.8
                 clip: true
                 Text{
                     id: slide_text
-                    anchors.bottom: parent.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: sysIsSymbian?10:20
                     anchors.right: parent.right
                     text: title
                     font.pixelSize: sysIsSymbian_v3?10:16
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 Text{
-                    anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    anchors.rightMargin: sysIsSymbian?10:20
                     font.pixelSize: sysIsSymbian_v3?10:16
                     text: (index+1)+"/"+get_slide_xml.count
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
         }
@@ -185,11 +185,13 @@ Item{
         Timer{
             id: set_list
             interval: 500
-            property int number: 1//记录改翻转到第几个大海报
+            property int number: 0//记录改翻转到第几个大海报
             onTriggered: {
                 //console.log(number)
+                var temp = slide_list.contentX/slide_list.width
+                number = (temp+1)%get_slide_xml.count
+                //console.log(temp)
                 slide_list.positionViewAtIndex(number,ListView.Beginning)
-                number = (number+1)%get_slide_xml.count
             }
         }
         

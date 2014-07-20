@@ -29,7 +29,7 @@ MyPage{
         ToolIcon{
             id: userCenter
             opacity: night_mode?brilliance_control:1
-            iconSource: night_mode?"qrc:/Image/userCenter_meego.png" : "qrc:/Image/userCenter_symbian_inverse.svg"
+            iconSource: night_mode?"qrc:/Image/userCenter_meego.png" : "qrc:/Image/userCenter_meego_inverse.png"
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("UserCenter.qml"))
             }
@@ -405,6 +405,8 @@ MyPage{
                         showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
                     }else if(!settings.getValue( "auto_updata_app", false )){
                         showBanner("已经是最新版本")
+                    }else if(!settings.getValue( "auto_updata_app", false )){
+                        showBanner("未知错误，请重试")
                     }
                 }
             }
@@ -420,11 +422,11 @@ MyPage{
             //height: width
             Component.onCompleted: {
                 if( settings.getValue( "auto_updata_app", false ) )
-                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=7")
             }
 
             onClicked: {
-                checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+                checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=7")
             }
         }
     }

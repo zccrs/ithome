@@ -88,6 +88,7 @@ MyPage{
     
     Image{
         id:header
+        z:1
         opacity: text_opacity
         width: parent.width
         source: "qrc:/Image/PageHeader.svg"

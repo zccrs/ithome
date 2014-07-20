@@ -15,7 +15,10 @@ QNetworkAccessManager* MyNetworkAccessManagerFactory::create(QObject *parent)
     QMutexLocker lock(&mutex);
     Q_UNUSED(lock);
     QNetworkAccessManager* manager = new NetworkAccessManager(parent);
-
+    
+    QNetworkCookieJar* cookieJar = NetworkCookieJar::GetInstance();
+    manager->setCookieJar(cookieJar);
+    cookieJar->setParent(0);
     return manager;
 }
 
@@ -46,19 +49,31 @@ QNetworkReply *NetworkAccessManager::createRequest(Operation op, const QNetworkR
     }
     Settings settings;
     req.setRawHeader ("Cookie", settings.getValue ("userCookie","").toByteArray ());
-
     QNetworkReply *reply = QNetworkAccessManager::createRequest(op, req, outgoingData);
+    //QNetworkCookieJar* cookieJar = NetworkCookieJar::GetInstance();
+    //reply->manager ()->setCookieJar (cookieJar);
+    //cookieJar->setParent (0);
     return reply;
 }
 
-/*NetworkCookieJar::NetworkCookieJar(QObject *parent) :
+NetworkCookieJar::NetworkCookieJar(QObject *parent) :
     QNetworkCookieJar(parent)
 {
-    keepAliveCookie = QNetworkCookie("ka", "open");
+    //keepAliveCookie = QNetworkCookie("ka", "open");
+    load ();
 }
 
 NetworkCookieJar::~NetworkCookieJar()
 {
+}
+
+void NetworkCookieJar::load()
+{
+    QMutexLocker lock(&mutex);
+    Q_UNUSED(lock);
+    Settings settings;
+    QByteArray data = settings.getValue("userCookie").toByteArray();
+    setAllCookies(QNetworkCookie::parseCookies(data));
 }
 
 NetworkCookieJar* NetworkCookieJar::GetInstance()
@@ -77,8 +92,15 @@ QList<QNetworkCookie> NetworkCookieJar::cookiesForUrl(const QUrl &url) const
 {
     QMutexLocker lock(&mutex);
     Q_UNUSED(lock);
-    QList<QNetworkCookie> cookies = QNetworkCookieJar::cookiesForUrl(url);
-    return cookies;
+    QString url_string = url.toString ();
+    if( url_string.indexOf ("i.ruanmei.com")>0||url_string.indexOf ("www.ithome.com")>0){
+        Settings settings;
+        QByteArray data = settings.getValue("userCookie").toByteArray();
+        return QNetworkCookie::parseCookies(data);
+    }else{
+        QList<QNetworkCookie> cookies = QNetworkCookieJar::cookiesForUrl(url);
+        return cookies;
+    }
 }
 
 bool NetworkCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
@@ -86,4 +108,4 @@ bool NetworkCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList
     QMutexLocker lock(&mutex);
     Q_UNUSED(lock);
     return QNetworkCookieJar::setCookiesFromUrl(cookieList, url);
-}*/
+}

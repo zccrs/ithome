@@ -424,6 +424,8 @@ MyPage{
                     }else if(!settings.getValue( "auto_updata_app", false )){
                         showBanner("已经是最新版本")
                     }
+                }else if(!settings.getValue( "auto_updata_app", false )){
+                    showBanner("未知错误，请重试")
                 }
             }
         }
@@ -438,11 +440,11 @@ MyPage{
             width: parent.width*0.6
             Component.onCompleted: {
                 if( settings.getValue( "auto_updata_app", false ) )
-                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+                    checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=6")
             }
 
             onClicked: {
-                checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=5")
+                checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=6")
             }
         }
     }
