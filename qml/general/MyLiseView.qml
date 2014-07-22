@@ -35,7 +35,7 @@ ListView {
             Behavior on y { SpringAnimation { spring: 3; damping: 0.2 } }
         }
     }
-    highlight: (deviceName==="RM-609"||(deviceName==="Simulator Product Name"&width===640))||sysIsSymbian_v3?highlightBar:null
+    highlight: sysIsSymbian_v3?highlightBar:null
     property bool loadSwitch: true
 
     function addmodel(){

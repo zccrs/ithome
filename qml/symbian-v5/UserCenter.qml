@@ -7,7 +7,9 @@ MyPage{
     id: user_center_main
     property real text_opacity: night_mode?brilliance_control:1
     property string mode: "个人中心"
-    
+    onModeChanged:{
+        flick.contentY=0
+    }
     tools: CustomToolBarLayout{
         id:userCenterTool
         ToolButton{
@@ -114,7 +116,7 @@ MyPage{
             function setLevelState(string)
             {
                 var temp = string.split( "<br>" )
-                string = temp[0]+"\n"+temp[1]
+                string = temp[0]+"  "+temp[1]
                 utility.consoleLog("升级状态是："+string)
                 settings.setValue("LevelState",string)
                 level_state.text=string
@@ -212,9 +214,7 @@ MyPage{
     
     Item{
         id: user_center_page
-        anchors.top: header.bottom
-        width: parent.width
-        height: 494
+        anchors.fill: parent
         
         Image{
             id:user_avatar
@@ -279,7 +279,7 @@ MyPage{
             color: main.night_mode?"#f0f0f0":"#282828"
             opacity: night_mode?brilliance_control:0.6
             text: settings.getValue("LevelState","")
-            font.pixelSize: 18
+            font.pointSize: 5
             anchors.left: user_nick.left
             anchors.bottom: user_avatar.bottom
         }
@@ -354,47 +354,51 @@ MyPage{
         }
     }
     
-    Flipable {
-         id: flipable_user_center
-         anchors.top: header.bottom
-         width: parent.width
-         height: 494
-         property bool flipped: false
-         visible: user_center_main.mode == "个人中心"|user_center_main.mode == "修改密码"
-         front: user_center_page
-         
-         state:"front"
-         back: SetUserPassword{}
-         
-         transform: Rotation {
-             id: rotation
-             origin.x: flipable_user_center.width/2
-             origin.y: flipable_user_center.height/2
-             axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
-             angle: 0    // the default angle
-         }
-    
-         states: [
-             State {
-                 name: "back"
-                 PropertyChanges { target: rotation; angle: 180 }
-             },
-             State {
-                 name: "front"
-                 PropertyChanges { target: rotation; angle: 0 }
+    Flickable{
+        id:flick
+        anchors.top: header.bottom
+        width: parent.width
+        height: parent.height-header.height-tools.height
+        contentHeight: 494
+        Flipable {
+             id: flipable_user_center
+             anchors.fill: parent
+             property bool flipped: false
+             visible: user_center_main.mode == "个人中心"|user_center_main.mode == "修改密码"
+             front: user_center_page
+
+             state:"front"
+             back: SetUserPassword{}
+
+             transform: Rotation {
+                 id: rotation
+                 origin.x: flipable_user_center.width/2
+                 origin.y: flipable_user_center.height/2
+                 axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                 angle: 0    // the default angle
              }
-         ]    
-         transitions: Transition {
-             NumberAnimation { target: rotation; property: "angle"; duration: 300 }
-         }
-    }
-    
-    LoginPage{
-        id: user_login
-        height: flipable_user_center.height
-        onLoginOK: {
-            utility.getUserData()
-            user_center_main.mode = "个人中心"
+
+             states: [
+                 State {
+                     name: "back"
+                     PropertyChanges { target: rotation; angle: 180 }
+                 },
+                 State {
+                     name: "front"
+                     PropertyChanges { target: rotation; angle: 0 }
+                 }
+             ]
+             transitions: Transition {
+                 NumberAnimation { target: rotation; property: "angle"; duration: 300 }
+             }
+        }
+
+        LoginPage{
+            id: user_login
+            onLoginOK: {
+                utility.getUserData()
+                user_center_main.mode = "个人中心"
+            }
         }
     }
     

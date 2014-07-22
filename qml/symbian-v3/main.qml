@@ -27,6 +27,7 @@ PageStackWindow {
     property string deviceManufacturer: deviceInfo.manufacturer//设备厂家，例如n9为Nokia
     property bool screenOrientation: settings.getValue("screenOrientation",PageOrientation.LockPortrait)//自动旋转屏幕
     property string labelTxt: "IT之家"//系统状态栏显示的文字
+    property bool screenIsLandscape: screen.currentOrientation == Screen.Landscape
 
     onOrientationChangeFinished: {
         utility.consoleLog("屏幕方向变了："+width)

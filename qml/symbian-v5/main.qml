@@ -1,22 +1,5 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
-/*import QtWebKit 1.0
-
-Flickable{
-    id:root
-    width: 360
-    height: 640
-    contentHeight: web.height
-    contentWidth: web.width
-    flickableDirection :Flickable.HorizontalAndVerticalFlick
-    WebView{
-        id:web
-        //anchors.fill: parent
-        preferredWidth: root.width
-        url:"http://wap.ithome.com/rss/onlycomment_93884.html"
-    }
-}*/
-
+import QtQuick 1.0
 import com.nokia.symbian 1.0
 import QtMobility.systeminfo 1.1
 import com.nokia.extras 1.0
@@ -40,9 +23,10 @@ PageStackWindow {
     property string deviceMode: deviceInfo.model//设备型号，例如n9为n9
     property string deviceManufacturer: deviceInfo.manufacturer//设备厂家，例如n9为Nokia
     property bool screenOrientation: settings.getValue("screenOrientation",PageOrientation.LockPortrait)//自动旋转屏幕
+    property bool screenIsLandscape: screen.currentOrientation == Screen.Landscape
 
     onOrientationChangeFinished: {
-        utility.consoleLog("屏幕方向变了："+width)
+        utility.consoleLog("屏幕方向变了："+width+" "+screenIsLandscape)
         if(current_page==="comment")
             setCssToComment()
         else

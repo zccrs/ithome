@@ -5,7 +5,6 @@ Item{
     id: login_main
     signal loginOK
     state: "hide"
-    property alias menu: menu
     width: parent.width
     height: parent.height
     

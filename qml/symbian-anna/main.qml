@@ -23,9 +23,9 @@ PageStackWindow {
     property string deviceMode: deviceInfo.model//设备型号，例如n9为n9
     property string deviceManufacturer: deviceInfo.manufacturer//设备厂家，例如n9为Nokia
     property bool screenOrientation: settings.getValue("screenOrientation",PageOrientation.LockPortrait)//自动旋转屏幕
+    property bool screenIsLandscape: screen.currentOrientation == Screen.Landscape
 
     onOrientationChangeFinished: {
-        utility.consoleLog("屏幕方向变了："+width)
         if(current_page==="comment")
             setCssToComment()
         else

@@ -7,7 +7,10 @@ MyPage{
     id: user_center_main
     property real text_opacity: night_mode?brilliance_control:1
     property string mode: "个人中心"
-    
+    onModeChanged:{
+        flick.contentY=0
+    }
+
     tools: ToolBarLayout{
         id:userCenterTool
         ToolIcon{
@@ -213,10 +216,7 @@ MyPage{
     
     Item{
         id: user_center_page
-        anchors.top: header.bottom
-        width: parent.width
-        height: 659
-        
+        anchors.fill: parent
         Image{
             id:user_avatar
             cache: false
@@ -358,47 +358,52 @@ MyPage{
         }
     }
     
-    Flipable {
-         id: flipable_user_center
-         anchors.top: header.bottom
-         width: parent.width
-         height: 659
-         property bool flipped: false
-         visible: user_center_main.mode == "个人中心"|user_center_main.mode == "修改密码"
-         front: user_center_page
-         
-         state:"front"
-         back: SetUserPassword{}
-         
-         transform: Rotation {
-             id: rotation
-             origin.x: flipable_user_center.width/2
-             origin.y: flipable_user_center.height/2
-             axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
-             angle: 0    // the default angle
-         }
-    
-         states: [
-             State {
-                 name: "back"
-                 PropertyChanges { target: rotation; angle: 180 }
-             },
-             State {
-                 name: "front"
-                 PropertyChanges { target: rotation; angle: 0 }
+    Flickable{
+        id:flick
+        anchors.top: header.bottom
+        width: parent.width
+        height: parent.height-header.height-tools.height
+        contentHeight: 659
+        Flipable {
+             id: flipable_user_center
+             anchors.fill: parent
+             property bool flipped: false
+             visible: user_center_main.mode == "个人中心"|user_center_main.mode == "修改密码"
+             front: user_center_page
+
+             state:"front"
+             back: SetUserPassword{}
+
+             transform: Rotation {
+                 id: rotation
+                 origin.x: flipable_user_center.width/2
+                 origin.y: flipable_user_center.height/2
+                 axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                 angle: 0    // the default angle
              }
-         ]    
-         transitions: Transition {
-             NumberAnimation { target: rotation; property: "angle"; duration: 300 }
-         }
-    }
-    
-    LoginPage{
-        id: user_login
-        height: flipable_user_center.height
-        onLoginOK: {
-            utility.getUserData()
-            user_center_main.mode = "个人中心"
+
+             states: [
+                 State {
+                     name: "back"
+                     PropertyChanges { target: rotation; angle: 180 }
+                 },
+                 State {
+                     name: "front"
+                     PropertyChanges { target: rotation; angle: 0 }
+                 }
+             ]
+             transitions: Transition {
+                 NumberAnimation { target: rotation; property: "angle"; duration: 300 }
+             }
+        }
+
+        LoginPage{
+            id: user_login
+            height: flipable_user_center.height
+            onLoginOK: {
+                utility.getUserData()
+                user_center_main.mode = "个人中心"
+            }
         }
     }
     

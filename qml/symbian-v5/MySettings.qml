@@ -173,7 +173,7 @@ MyPage{
         
         MySwitch{
             id:auto_updata_app
-            checked: settings.getValue("auto_updata_app",0)==1
+            checked: settings.getValue("auto_updata_app",1)==1
             anchors.top: full_screen.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -421,10 +421,10 @@ MyPage{
                     if( ver.version != utility.ithomeVersion){
                         utility.setClipboard( ver.url )
                         showBanner("最新版本："+ver.version+"\n下载地址已经复制到剪切板")
-                    }else if(settings.getValue( "auto_updata_app", 0 )==0){
+                    }else if(settings.getValue( "auto_updata_app", 1 )==0){
                         showBanner("已经是最新版本")
                     }
-                }else if(settings.getValue( "auto_updata_app", false )==0){
+                }else if(settings.getValue( "auto_updata_app", 1 )==0){
                     showBanner("未知错误，请重试")
                 }
             }
@@ -439,7 +439,7 @@ MyPage{
             //height : width
             width: parent.width*0.6
             Component.onCompleted: {
-                if( settings.getValue( "auto_updata_app", 0 )==1 )
+                if( settings.getValue( "auto_updata_app", 1 )==1 )
                     checkForUpdates_http.post("GET","http://www.9smart.cn/app/checkversion?appid=6")
             }
 

@@ -21,9 +21,7 @@ PageStackWindow {
     property string deviceManufacturer: deviceInfo.manufacturer//设备厂家，例如n9为Nokia
     property bool loading: false
     property int screenOrientation: settings.getValue("screenOrientation",PageOrientation.LockPortrait)//自动旋转屏幕
-    onScreenOrientationChanged: {
-        utility.consoleLog(settings.getValue("screen_orientation",PageOrientation.LockPortrait))
-    }
+    property bool screenIsLandscape: screen.currentOrientation == Screen.Landscape
 
     onOrientationChangeStarted: {
         utility.consoleLog("屏幕方向变了："+(screen.currentOrientation===Screen.Portrait?height:width))
@@ -55,6 +53,7 @@ PageStackWindow {
             }
         }
     }
+    
     function setCssToComment()
     {
         if(night_mode){

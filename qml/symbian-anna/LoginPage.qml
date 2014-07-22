@@ -3,10 +3,10 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 Item{
     id: login_mian
-    width: parent.width
     signal loginOK
     state: "hide"
-
+    width: parent.width
+    height: parent.height
     Connections{
         target: user_center_main
         onModeChanged:{
@@ -39,7 +39,7 @@ Item{
             name: "show"
             PropertyChanges {
                 target: login_mian
-                y: header.height
+                y: 0
                 opacity: 1
             }
         },

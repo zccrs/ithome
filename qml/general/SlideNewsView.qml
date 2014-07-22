@@ -6,7 +6,7 @@ import QtWebKit 1.0
 Item{
     id: slideNews_main
     width: parent.width
-    height: 347/600*width
+    height: (no_show_image|isWifi&wifiStatus===-1)?0:(screenIsLandscape?0:347/600*width)
     property bool updata: false
     clip: true
     Connections{
@@ -48,7 +48,7 @@ Item{
         delegate: Image{
             id: slide_image
             sourceSize.width: slideNews_main.width
-            source: imageSrc
+            source: (no_show_image|isWifi&wifiStatus===-1)?"":(screenIsLandscape?"":imageSrc)
             //source: "qrc:/Image/Symbian.png"
             onStatusChanged: {
                 if( slide_image.status == Image.Ready ){

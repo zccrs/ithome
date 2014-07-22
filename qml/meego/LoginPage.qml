@@ -4,6 +4,7 @@ import com.nokia.meego 1.1
 Item{
     id: login_mian
     width: parent.width
+    height: parent.height
     signal loginOK
     state: "hide"
 
@@ -39,7 +40,7 @@ Item{
             name: "show"
             PropertyChanges {
                 target: login_mian
-                y: header.height
+                y: 0
                 opacity: 1
             }
         },
