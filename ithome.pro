@@ -12,19 +12,21 @@ folder_02.source = qml/symbian-anna
 folder_02.target = qml
 folder_03.source = qml/general
 folder_03.target = qml
-folder_04.source = qml/symbian-v5#如果是s60v3就改成symbian-v3，是v5就是symbian-v5
+folder_04.source = qml/symbian-v3#如果是s60v3就改成symbian-v3，是v5就是symbian-v5
 folder_04.target = qml
 DEPLOYMENTFOLDERS = folder_03
 
 
 
 simulator {
+    message(simulator build)
     DEPLOYMENTFOLDERS += folder_01 folder_02 folder_04
     RESOURCES += \
         symbian.qrc
 }
 
 contains(MEEGO_EDITION, harmattan){
+    message(harmattan build)
     DEPLOYMENTFOLDERS += folder_01
     DEFINES += Q_OS_HARMATTAN
 
@@ -54,11 +56,13 @@ QML_IMPORT_PATH =
 
 symbian:{
     contains(S60_VERSION, 5.0){
-        DEFINES += Q_OS_S60V5#如果是s60v3就改成Q_OS_S60V3，是v5就是Q_OS_S60V5
+        message(symbian s60v3 build)
+        DEFINES += Q_OS_S60V3#如果是s60v3就改成Q_OS_S60V3，是v5就是Q_OS_S60V5
         INCLUDEPATH += $$[QT_INSTALL_PREFIX]/epoc32/include/middleware
         INCLUDEPATH += $$[QT_INSTALL_PREFIX]/include/Qt
         DEPLOYMENTFOLDERS += folder_04
     }else{
+        message(symbian anna build)
         DEPLOYMENTFOLDERS += folder_02
     }
     DEPLOYMENTFOLDERS += folder_03

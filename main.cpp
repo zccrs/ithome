@@ -56,29 +56,32 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QWebSettings::globalSettings ()->setAttribute (QWebSettings::SpatialNavigationEnabled, true);
 #if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
 #if defined(Q_OS_S60V5)//判断qt的版本
+    qWarning("build symbian s60v5");
     viewer.setMainQmlFile(QLatin1String("qml/symbian-v5/main.qml"));
     if(setting->getValue("night_mode",false).toBool())
         unility->setCss("./qml/symbian-v5/theme_black.css",viewer.width()-20);//设置默认的css
     else
         unility->setCss("./qml/symbian-v5/theme_white.css",viewer.width()-20);
 #elif defined(Q_OS_S60V3)
+    qWarning("build symbian s60v3");
     viewer.setMainQmlFile(QLatin1String("qml/symbian-v3/main.qml"));
     if(setting->getValue("night_mode",false).toBool())
         unility->setCss("./qml/symbian-v3/theme_black.css",viewer.width()-20);//设置默认的css
     else
         unility->setCss("./qml/symbian-v3/theme_white.css",viewer.width()-20);
 #else
+    qWarning("build symbian anna or simulator");
     viewer.setMainQmlFile(QLatin1String("qml/symbian-anna/main.qml"));
     if(setting->getValue("night_mode",false).toBool())
         unility->setCss("./qml/symbian-anna/theme_black.css",viewer.width()-20);//设置默认的css
     else
         unility->setCss("./qml/symbian-anna/theme_white.css",viewer.width()-20);
 #endif
-
     viewer.showExpanded();
     splash->finish(&viewer);
     splash->deleteLater();
 #elif defined(Q_OS_HARMATTAN)
+    qWarning("build meego");
     viewer.setMainQmlFile(QLatin1String("qml/meego/main.qml"));
     if(setting->getValue("night_mode",false).toBool())
         unility->setCss("/opt/ithome/qml/meego/theme_black.css",460);//设置默认的css
