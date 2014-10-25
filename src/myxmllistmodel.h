@@ -89,7 +89,7 @@ class MyXmlListModel : public QDeclarativeItem , public QDomDocument
     Q_OBJECT
     Q_PROPERTY(Status status READ status WRITE setStatus NOTIFY statusChanged)//我的状态
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)//xml文件路径
-    //Q_PROPERTY(QString xml READ xml WRITE setXml NOTIFY xmlChanged)//xml数据
+    Q_PROPERTY(QString xml READ xml WRITE setXml NOTIFY xmlChanged)//xml数据
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)//设置从哪个标签开始
     Q_PROPERTY(int count READ count NOTIFY countChanged)//获取到的标签的个数
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)//是否在创建完毕就获取
@@ -115,8 +115,8 @@ private:
     void setStatus(const Status new_status); //
 
     QString m_xml;                      //
-    //const QString xml();                ////xml文件路径
-    //void setXml(const QString new_xml); //
+    const QString xml();                ////xml文件路径
+    void setXml(const QString new_xml); //
 
     QUrl m_source;                     //
     const QUrl source();               ////xml数据
@@ -153,7 +153,7 @@ private:
 signals:
     void downloadData(const QUrl url);
     void stopDownload();//停止从网络下载数据
-    //void xmlChanged();
+    void xmlChanged();
     void sourceChanged();
     void queryChanged();
     void statusChanged();

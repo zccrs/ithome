@@ -113,7 +113,7 @@ void MyXmlListModel::setStatus(const Status new_status)
     }
 }
 
-/*const QString MyXmlListModel::xml()
+const QString MyXmlListModel::xml()
 {
     return m_xml;
 }
@@ -121,11 +121,11 @@ void MyXmlListModel::setXml(const QString new_xml)
 {
     if(new_xml!=m_xml)
     {
-        setContent(new_xml);
+        setSource (QUrl(""));
         m_xml=new_xml;
         emit xmlChanged();
     }
-}*/
+}
 const QUrl MyXmlListModel::source()
 {
     return m_source;
@@ -136,7 +136,6 @@ void MyXmlListModel::setSource(QUrl new_source)
     if(new_source!=m_source)
     {
         m_source=new_source;
-        qDebug()<<QString::fromUtf8("source改变:")<<source();
         emit sourceChanged();
     }
 }
@@ -156,8 +155,6 @@ void MyXmlListModel::setQuery(const QString new_query)
             if(prefixTags[i]=="")
                 prefixTags.removeAt(i);
         }
-        for(int i=0;i<prefixTags.count();i++)
-            qDebug()<<prefixTags[i];
         emit queryChanged();
     }
 }

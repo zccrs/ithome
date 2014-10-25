@@ -137,7 +137,8 @@ OTHER_FILES += \
     qml/symbian-v3/RegisterAccount.qml \
     qml/symbian-v3/MyRadioButton.qml \
     qml/symbian-v3/LoginPage.qml \
-    qml/meego/UIConstants.js
+    qml/meego/UIConstants.js \
+    ithome_harmattan.desktop
 
 RESOURCES += \
     general.qrc \
@@ -151,9 +152,3 @@ HEADERS += \
     src/myxmllistmodel.h \
     src/cache.h \
     src/mynetworkaccessmanagerfactory.h
-
-contains(MEEGO_EDITION,harmattan) {
-    desktopfile.files = ithome.desktop
-    desktopfile.path = /usr/share/applications
-    INSTALLS += desktopfile
-}
