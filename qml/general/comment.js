@@ -1,16 +1,16 @@
-﻿function CloseReplay(commentid) {
+function CloseReplay(commentid) {
         var ReplyDiv = document.getElementById('Reply' + commentid);
         ReplyDiv.style.display = 'none';
 }
-function ShowReplay(commentid,newsid,lou)
+function ShowReply(commentid,newsid,lou,parentcommentID,nickname)
 {
-    var obj
+    /*var obj
     obj=document.getElementById("against" + commentid).parentNode.parentNode.parentNode.firstChild.firstChild
-    
+
     var text = obj.innerHTML
-    text = text.substr(0,text.length-1)
-    
-    window.qml.commentReply(commentid,text,lou)
+    text = text.substr(0,text.length-1)*/
+
+    window.qml.commentReply(commentid,nickname,lou)
 }
 
 function commentFinish(msg, commentid)
@@ -94,14 +94,14 @@ function addCommentFinish(page)
                 {
                     if(post.status===200)
                     {
-                        if(post.responseText.indexOf('您')>-1)
+                        if(!parseInt(post.responseText))
                             window.qml.showAlert(post.responseText)
                         else
                             reData(commentid,typeid,post.responseText)
                     }
                 }
             }
-    post.send("commentid=" + commentid + "&type=replyVote&typeid=" + typeid)
+    post.send("commentid=" + commentid + "&type=loginReplyVote&typeid=" + typeid)
     //window.qml.acquireComment(commentid,typeid,"commentid=" + commentid + "&type=replyVote&typeid=" + typeid)
  }
 function reData(commentid,typeid,count)

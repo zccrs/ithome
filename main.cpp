@@ -24,7 +24,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     splash->raise();
 #endif
 
-#if defined(Q_WS_SIMULATOR)
+#ifndef QT_NO_DEBUG
     QNetworkProxy proxy;
     proxy.setType(QNetworkProxy::HttpProxy);
     proxy.setHostName("localhost");

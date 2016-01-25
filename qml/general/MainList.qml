@@ -107,9 +107,9 @@ Item {//
             zone=""
             addWPZone()
             break
-        case "win8":
+        case "windows":
             zone=""
-            addWIN8Zone()
+            addWindowsZone()
             break
         case "ios":
             zone=""
@@ -118,6 +118,14 @@ Item {//
         case "android":
             zone=""
             addAndroidZone()
+            break
+        case "phone":
+            zone=""
+            addPhoneZone()
+            break
+        case "digi":
+            zone=""
+            addDigiZone()
             break
         default:break
         }
@@ -177,10 +185,10 @@ Item {//
             postNewModel(zone)
         }
     }
-    function addWIN8Zone(){
-        if(zone!="win8"){
-            zone="win8"
-            stateText.text="WIN8专区"
+    function addWindowsZone(){
+        if(zone!="windows"){
+            zone="windows"
+            stateText.text="Windows专区"
             postNewModel(zone)
         }
     }
@@ -195,6 +203,20 @@ Item {//
         if(zone!="android"){
             zone="android"
             stateText.text="Android专区"
+            postNewModel(zone)
+        }
+    }
+    function addPhoneZone(){
+        if(zone!="phone"){
+            zone="phone"
+            stateText.text="手机"
+            postNewModel(zone)
+        }
+    }
+    function addDigiZone(){
+        if(zone!="digi"){
+            zone="digi"
+            stateText.text="数码"
             postNewModel(zone)
         }
     }

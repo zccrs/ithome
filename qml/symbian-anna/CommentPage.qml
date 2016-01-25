@@ -109,9 +109,12 @@ MyPage {
                     utility.consoleLog("html索取了新闻id")
                     return mysid
                 }
-                function commentReply(commentid,floor,lou_zhong_lou)
+                function commentReply(commentid,nickname,lou)
                 {
-                    comment.placeholderText="点击回复"+(lou_zhong_lou==0?floor:lou_zhong_lou)+"楼"
+                    comment.placeholderText = "点击回复"
+                    if(nickname!="")
+                        comment.placeholderText+="#" + lou + ":" + nickname
+
                     comment.parentCommentID=commentid
                     comment.show()
                 }

@@ -92,9 +92,11 @@ MyPage{
             ListElement { name: "最新资讯" }
             ListElement { name: "排行榜" }
             ListElement { name: "WP专区" }
-            ListElement { name: "WIN8专区" }
+            ListElement { name: "Windows专区" }
             ListElement { name: "IOS专区" }
             ListElement { name: "Android专区" }
+            ListElement { name: "手机" }
+            ListElement { name: "数码" }
         }
         //onPrivateClicked: console.log("PrivateClicked")
         onAccepted: {
@@ -112,13 +114,19 @@ MyPage{
                 list.addWPZone()
                 break
             case 4:
-                list.addWIN8Zone()
+                list.addWindowsZone()
                 break
             case 5:
                 list.addIOSZone()
                 break
             case 6:
                 list.addAndroidZone()
+                break
+            case 7:
+                list.addPhoneZone()
+                break
+            case 8:
+                list.addDigiZone()
                 break
             default:break
             }
