@@ -1,16 +1,16 @@
-﻿function CloseReplay(commentid) {
+function CloseReplay(commentid) {
         var ReplyDiv = document.getElementById('Reply' + commentid);
         ReplyDiv.style.display = 'none';
 }
-function ShowReplay(commentid,newsid,lou)
+function ShowReply(commentid,newsid,lou,parentcommentID,nickname)
 {
-    var obj
+    /*var obj
     obj=document.getElementById("against" + commentid).parentNode.parentNode.parentNode.firstChild.firstChild
-    
+
     var text = obj.innerHTML
-    text = text.substr(0,text.length-1)
-    
-    window.qml.commentReply(commentid,text,lou)
+    text = text.substr(0,text.length-1)*/
+
+    window.qml.commentReply(commentid,nickname,lou)
 }
 
 function commentFinish(msg, commentid)
@@ -96,14 +96,14 @@ function commentVote(commentid, typeid) {
                 {
                     if(post.status===200)
                     {
-                        if(post.responseText.indexOf('您')>-1)
+                        if(!parseInt(post.responseText))
                             window.qml.showAlert(post.responseText)
                         else
                             reData(commentid,typeid,post.responseText)
                     }
                 }
             }
-    post.send("commentid=" + commentid + "&type=replyVote&typeid=" + typeid)
+    post.send("commentid=" + commentid + "&type=loginReplyVote&typeid=" + typeid)
     //alert("楼层id:"+commentid)
     //window.qml.acquireComment(commentid,typeid,"commentid=" + commentid + "&type=replyVote&typeid=" + typeid)
 }
@@ -200,9 +200,9 @@ function initHtml()
                                 pos=string.indexOf("class=\"entry\"",pos+100)
                             }
                             if(count>=50)//判断评论是否超过50,用来判断是否要显示“查看更多评论的选项”
-                                document.getElementById("commentlist").innerHTML = unescape('<h3><span class="icon2"></span>评论列表</h3><ul class="list" id="ulcommentlist">'+string+'</ul><ul class="list" id="LoadArticleReply"></ul><div class="more_comm"><a id="pagecomment" href="javascript:pagecomment(++commentpage,0);">查看更多评论 ...</a></div>');
+                                document.getElementById("commentlist").innerHTML = unescape('<h3><span class="icon2"></span>评论列表</h3><ul class="list" id="LoadArticleReply"></ul><ul class="list" id="ulcommentlist">'+string+'</ul><ul class="list" id="LoadArticleReplyLatest"></ul><div class="more_comm"><a id="pagecomment" href="javascript:pagecomment(++commentpage,0);">查看更多评论 ...</a></div>');
                             else
-                                document.getElementById("commentlist").innerHTML = unescape('<h3><span class="icon2"></span>评论列表</h3><ul class="list" id="ulcommentlist">'+string+'</ul><ul class="list" id="LoadArticleReply"></ul>');
+                                document.getElementById("commentlist").innerHTML = unescape('<h3><span class="icon2"></span>评论列表</h3><ul class="list" id="LoadArticleReply"></ul><ul class="list" id="ulcommentlist">'+string+'</ul><ul class="list" id="LoadArticleReplyLatest"></ul>');
                         }else{
                             document.getElementById("commentlist").innerHTML = unescape('<h3><span class="icon2"></span>评论列表</h3>');
                             window.qml.showAlert("还没有人评论，赶快抢沙发")

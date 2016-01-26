@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Tue, 26 Jan 2016 14:09:21 +0800
+Source: ithome
+Binary: ithome
+Architecture: armel
+Version: 1.2.2
+Distribution: unstable
+Urgency: low
+Maintainer: 雨后星辰<853715872@qq.com>
+Changed-By: unknown <>
+Description: 
+ ithome     - 本软件基于Qt开发。瑾献于坚守在symbian和meego的各
+Changes: 
+ ithome (1.2.2) unstable; urgency=low
+ .
+   * <更新新闻分类（新增windows专区、phone专区、数码专区）
+      修复楼中楼无法回复的问题
+      修复支持和反对无法点击问题
+      增加评论自适应正序和逆序功能>
+Checksums-Sha1: 
+ ba15bea3e573aee8c7b2f566f933efa16514c255 357198 ithome_1.2.2_armel.deb
+Checksums-Sha256: 
+ ee19a2934dd514e85091003ee73180ee02a8275f2e2a11b1618abf9f3b5318be 357198 ithome_1.2.2_armel.deb
+Files: 
+ 22cfebbd9cdb10356cf067c5ac36b211 357198 user/other optional ithome_1.2.2_armel.deb
+Maemo-Display-Name: ithome

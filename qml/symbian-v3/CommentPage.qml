@@ -109,9 +109,11 @@ MyPage {
                 }
                 function commentReply(commentid,nickname,lou)
                 {
-                    comment.placeholderText = "点击回复"
-                    if(nickname!="")
-                        comment.placeholderText+="#" + lou + ":" + nickname
+                    if(nickname!="") {
+                        comment.text = "回复#" + lou + " " + utility.fromUtf8(nickname) + ": "
+                    } else {
+                        comment.placeholderText = "点击回复"
+                    }
 
                     comment.parentCommentID=commentid
                     comment.show()

@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 Item{
     property alias placeholderText: contentField.placeholderText
+    property alias text: contentField.text
     property string parentCommentID: "0"//回复楼中楼时候的id标识
     function commentClose(msg){}
     id:comment

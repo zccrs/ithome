@@ -1,4 +1,4 @@
-﻿#include "utility.h"
+#include "utility.h"
 #include <QDebug>
 #include <QImage>
 #include <QFile>
@@ -428,6 +428,11 @@ QString Utility::deleteMyLikeNews(const QString newsid,bool isRecursion)
         return QString::fromUtf8("操作完成");
     else
         return QString::fromUtf8("操作失败，请重试");
+}
+
+QString Utility::fromUtf8(const QByteArray &array)
+{
+    return QString::fromUtf8(array);
 }
 
 bool Utility::getFavorite(QString newsid)

@@ -1,6 +1,6 @@
 # Add more folders to ship with the application, here
 TARGET = ithome
-VERSION = 1.2.0
+VERSION = 1.2.2
 
 QT += network webkit xml
 CONFIG += mobility

@@ -79,6 +79,8 @@ public slots:
     QString addMyLikeNews(const QString newsid,const QString item,bool isRecursion=false);//保存喜欢的新闻
     QString deleteMyLikeNews(const QString newsid,bool isRecursion=false);//删除喜欢的新闻
 
+    QString fromUtf8(const QByteArray &array);
+
     bool getFavorite(QString newsid);//读取收藏夹
     bool setFavorite(QString newsid,bool value);//加入收藏夹
 
